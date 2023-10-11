@@ -1,1 +1,39 @@
-<p>jeu works!</p>
+<div>
+  <div class="position">
+    <!-- pour afficher le nom du joueur si connecter -->
+    <table *ngIf="player">
+      <tr class="tableau">
+        <th>Pseudo</th>
+        <th>Score</th>
+        <th>Nombre de click</th>
+      </tr>
+      <tr class="tableau">
+        <td>{{ player.nom_pseudo }}</td>
+        <td>{{ totalPoints }}</td>
+        <td>{{ clickCount }}</td>
+      </tr>
+      <!-- pour afficher le score uniquement -->
+    </table>
+    <table *ngIf="!player">
+      <tr class="tableau">
+        <th>Score</th>
+        <th>Nombre de click</th>
+      </tr>
+      <tr class="tableau">
+        <td>{{ totalPoints }}</td>
+        <td>{{ clickCount }}</td>
+      </tr>
+    </table>
+    <!-- ajout du compteur de click sur la page -->
+
+    <!-- ajout de la méthode d'incrémentation par click -->
+    <!-- ajout de la méthode de changement d'image -->
+    <div class="containtImg">
+      <img
+        [src]="imageFontLvl1[imageIndex]"
+        (click)="incrementalZone()"
+        alt="Description de l'image"
+      />
+    </div>
+  </div>
+</div>

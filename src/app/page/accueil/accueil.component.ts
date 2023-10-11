@@ -9,7 +9,7 @@ import { PlayerService } from 'src/app/service/player.service';
   styleUrls: ['./accueil.component.css'],
 })
 export class AccueilComponent {
-  player: Classement[] = [];
+  player!: Classement[];
 
   constructor(private playerService: PlayerService) {}
 

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PlayerService } from 'src/app/service/player.service';
+import { Player } from '../models/player';
 
 @Component({
   selector: 'app-connexion',
@@ -25,6 +26,7 @@ export class ConnexionComponent {
 
   // je prépare l'envoie
   @Output() valueModalLog: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() profil!: Player;
   login: boolean = true;
   registred: boolean = false;
 
@@ -64,6 +66,7 @@ export class ConnexionComponent {
         localStorage.setItem('token', response.accessToken);
         this.router.navigate(['jeu']);
         this.transmettreValeur();
+        location.reload();
       },
       error: (error) => {
         alert('quelque chose c est mal passé');

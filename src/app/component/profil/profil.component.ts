@@ -31,4 +31,8 @@ export class ProfilComponent {
     // j'envoie ça
     this.valueModalProfil.emit(false);
   }
+  deconnexion() {
+    localStorage.clear();
+    location.reload();
+  }
 }

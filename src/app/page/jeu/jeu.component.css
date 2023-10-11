@@ -1,0 +1,29 @@
+/* mise en page de l'img */
+img {
+  height: calc(100vh - 13vh);
+  width: 70%;
+}
+/* mise en page du h1n  */
+.position {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  flex-direction: column;
+}
+.tableau {
+  display: flex;
+  height: 5vh;
+}
+th,
+td {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90%;
+  width: 100%;
+  border: 1px solid black;
+}
+table {
+  margin: 0;
+  padding: 0;
+}

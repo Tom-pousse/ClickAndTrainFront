@@ -8,18 +8,19 @@
 
 /* flex box + alignement + padding de la nav bar */
 .navbar {
-  text-align: center;
-
   display: flex;
-  /* padding: 15px; */
+  align-items: center;
+  height: 8vh;
   background-color: #00ffff;
 }
 
 /* retrait des décoration sur les liens + largeur des liens de 20% par rapport au block Navbar */
 a {
+  display: flex;
   justify-content: center;
-  width: 25%;
-  margin: 10px 10px;
+
+  width: 100%;
+
   text-decoration: none;
   color: black;
   font-size: larger;
@@ -28,6 +29,6 @@ a {
 
 a:hover {
   box-shadow: #135b5b;
-  transform: scale(1.2);
+  transform: scale(1.1);
   color: rgb(22, 170, 22);
 }
