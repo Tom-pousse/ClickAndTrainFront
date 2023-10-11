@@ -222,14 +222,41 @@ transmettreValeurProfil() {
 
   // j'envoie ça
   this.valueModalProfil.emit(false);
+```
 
 ## Etape 7 :
 
+```
+
+```
+
+```
+
+```
+
 ## Etape 8 : :
+
+```
+
+```
+
+```
+
+```
 
 ## Etape 9 : :
 
+```
+
+```
+
+```
+
+```
+
 ## Etape 10 : :
+
+```
 
 ```
 

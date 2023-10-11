@@ -30,7 +30,19 @@ export class ConnexionComponent {
 
   constructor(private playerService: PlayerService, private router: Router) {}
 
-  onInscription() {}
+  onInscription() {
+    console.log('aaaaa', this.inscription.value);
+    this.playerService
+      .inscriptionUtilisateur(this.inscription.value)
+      .subscribe({
+        next: (response) => {
+          this.switchLog();
+        },
+        error: (error) => {
+          alert('quelque chose c est mal passé');
+        },
+      });
+  }
 
   // methode au clic
   transmettreValeur() {
@@ -45,5 +57,17 @@ export class ConnexionComponent {
     this.registred = !this.registred;
   }
 
-  onLogin() {}
+  onLogin() {
+    console.log(this.connexion.value);
+    this.playerService.connexionUtilisateur(this.connexion.value).subscribe({
+      next: (response) => {
+        localStorage.setItem('token', response.accessToken);
+        this.router.navigate(['jeu']);
+        this.transmettreValeur();
+      },
+      error: (error) => {
+        alert('quelque chose c est mal passé');
+      },
+    });
+  }
 }

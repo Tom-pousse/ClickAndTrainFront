@@ -1,1 +1,15 @@
-<p>accueil works!</p>
+<div>
+  <h1>classement</h1>
+  <div>
+    <table border="1">
+      <tr>
+        <th>Pseudo</th>
+        <th>Score</th>
+      </tr>
+      <tr *ngFor="let user of player">
+        <td>{{ user.nom_pseudo }}</td>
+        <td>{{ user.num_score }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

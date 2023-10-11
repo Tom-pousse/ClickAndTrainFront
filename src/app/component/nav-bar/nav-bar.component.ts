@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 
+import { PlayerService } from 'src/app/service/player.service';
+import { Player } from '../models/player';
+
 @Component({
   selector: 'app-nav-bar',
   templateUrl: './nav-bar.component.html',
@@ -10,6 +13,8 @@ export class NavBarComponent {
   hideLogModal: boolean = false;
   // je déclare ma valeur false pour cacher la fenettrre modal
   hideProfilModal: boolean = false;
+
+  constructor(private playerService: PlayerService) {}
 
   // au click je change la valeur en true pour aficher la modal
   openModalProfil() {
