@@ -1,10 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
+import { PlayerService } from 'src/app/service/player.service';
 
 @Component({
   selector: 'app-connexion',
   templateUrl: './connexion.component.html',
-  styleUrls: ['./connexion.component.css']
+  styleUrls: ['./connexion.component.css'],
 })
 export class ConnexionComponent {
+  // connexion
+  inscription: FormGroup = new FormGroup({
+    nom_pseudo: new FormControl(''),
+    nom_email: new FormControl(''),
+    nom_password: new FormControl(''),
+    // nom_password_confirme: new FormControl(''),
+    num_score: new FormControl(0),
+    boo_admin: new FormControl(false),
+  });
+  connexion: FormGroup = new FormGroup({
+    nom_pseudo: new FormControl(''),
+    nom_password: new FormControl(''),
+  });
 
+  // je prépare l'envoie
+  @Output() valueModalLog: EventEmitter<boolean> = new EventEmitter<boolean>();
+  login: boolean = true;
+  registred: boolean = false;
+
+  constructor(private playerService: PlayerService, private router: Router) {}
+
+  onInscription() {}
+
+  // methode au clic
+  transmettreValeur() {
+    // j'envoie ça
+    console.log('transmition', this.valueModalLog.emit(false));
+    this.valueModalLog.emit(false);
+  }
+
+  // inverse les champs log et registred
+  switchLog() {
+    this.login = !this.login;
+    this.registred = !this.registred;
+  }
+
+  onLogin() {}
 }

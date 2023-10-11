@@ -1,1 +1,100 @@
 <p>connexion works!</p>
+
+<div>
+  <!-- if login pour switch entre connexion ou inscription -->
+  <div class="modal" *ngIf="login">
+    <div class="modal-content">
+      <span class="close"></span>
+
+      <!-- methode on login sur le bouton submit -->
+      <form [formGroup]="connexion" (ngSubmit)="onLogin()">
+        <h2>Connexion</h2>
+        <div>
+          <label for="nom_pseudo">Nom d'utilisateur:</label>
+          <input
+            type="text"
+            id="nom_pseudo"
+            name="nom_pseudo"
+            formControlName="nom_pseudo"
+          />
+        </div>
+        <div>
+          <label for="nom_password">mot de passe:</label>
+          <input
+            type="nom_password"
+            id="nom_password"
+            name="nom_password"
+            formControlName="nom_password"
+          />
+        </div>
+        <div>
+          <!-- methode au click pour transmettre la valeur boolean pour femer la fenetre -->
+          <button (click)="transmettreValeur()">Fermer</button>
+          <button type="submit">Connexion</button>
+        </div>
+      </form>
+      <div>
+        <!-- methode switch pour switch entre log et register -->
+        <button (click)="switchLog()">Pas encore inscrit ?</button>
+      </div>
+    </div>
+  </div>
+  <!-- if registred pour switch entre connexion ou inscription -->
+  <div class="modal" *ngIf="registred">
+    <div class="modal-content">
+      <span class="close"></span>
+      <!-- methode au click pour l'inscription -->
+      <form [formGroup]="inscription" (ngSubmit)="onInscription()">
+        <h2>Inscription</h2>
+        <div>
+          <label for="nom_pseudo">Nom d'utilisateur:</label>
+          <input
+            type="text"
+            id="nom_pseudo"
+            name="nom_pseudo"
+            formControlName="nom_pseudo"
+          />
+        </div>
+        <div>
+          <label for="nom_email">nom_email:</label>
+          <input
+            type="nom_email"
+            id="nom_email"
+            name="nom_email"
+            formControlName="nom_email"
+          />
+        </div>
+        <div>
+          <label for="nom_password">mot de passe:</label>
+          <input
+            type="nom_password"
+            id="nom_password"
+            name="nom_password"
+            formControlName="nom_password"
+          />
+        </div>
+        <!-- <div>
+          <label for="nom_pasword_confirme"
+            >confirmez votre mot de passe:</label
+          >
+          <input
+            type="nom_pasword_confirme"
+            id="nom_pasword_confirme"
+            name="nom_pasword_confirme"
+            formControlName="nom_pasword_confirme"
+          />
+        </div> -->
+        <div>
+          <!-- methode au click pour la value boolean de femer la fenetre -->
+          <button (click)="transmettreValeur()">Fermer</button>
+          <button type="submit">Connexion</button>
+        </div>
+
+        <div>
+          <!-- methode switch pour connexion/inscritpion -->
+          <a (click)="switchLog()">Déja inscrit ?</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
