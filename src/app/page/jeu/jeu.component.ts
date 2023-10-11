@@ -27,6 +27,7 @@ export class JeuComponent {
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
     });
+    this.getpts();
     this.pts = {
       num_score: this.clickCount,
     };
@@ -63,6 +64,18 @@ export class JeuComponent {
     this.playerService.updateScore(this.pts).subscribe({
       next: (response) => {
         console.log('je save');
+      },
+      error: (error) => {
+        error;
+      },
+    });
+  }
+
+  getpts() {
+    this.playerService.getProfil().subscribe({
+      next: (response) => {
+        console.log('je prend');
+        this.clickCount = this.player.num_score;
       },
       error: (error) => {
         error;
