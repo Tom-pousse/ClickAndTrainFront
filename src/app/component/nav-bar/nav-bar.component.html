@@ -1,1 +1,12 @@
-<p>nav-bar works!</p>
+<div class="navbar">
+  <a href="accueil">Accueil</a>
+  <a href="jeu">Jeu</a>
+  <!-- methode ou click pour open modal -->
+  <a (click)="openModalProfil()">Profil</a>
+</div>
+
+<!-- dans ma methode retourdeprofil je recupere la valeur de valuemodal profil pour fermer la modal  -->
+<app-profil
+  (valueModalProfil)="retourDeProfil($event)"
+  *ngIf="hideProfilModal"
+></app-profil>

@@ -1,0 +1,33 @@
+/* préparation des couleurs prévu pour la navbar */
+:root {
+  --colorA: #00ffff;
+  --colorB: #0000ff;
+  --colorC: #ff0000;
+  --colorD: #ffff00;
+}
+
+/* flex box + alignement + padding de la nav bar */
+.navbar {
+  text-align: center;
+
+  display: flex;
+  /* padding: 15px; */
+  background-color: #00ffff;
+}
+
+/* retrait des décoration sur les liens + largeur des liens de 20% par rapport au block Navbar */
+a {
+  justify-content: center;
+  width: 25%;
+  margin: 10px 10px;
+  text-decoration: none;
+  color: black;
+  font-size: larger;
+  font-weight: 900;
+}
+
+a:hover {
+  box-shadow: #135b5b;
+  transform: scale(1.2);
+  color: rgb(22, 170, 22);
+}
