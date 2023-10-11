@@ -38,7 +38,7 @@ export class PlayerService {
 
   updateScore(player: Score): Observable<Player> {
     const headers = this.setHeaders();
-    console.log('save', player);
+    // console.log('save', player);
     return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
       headers,
     });

@@ -28,12 +28,32 @@
 
     <!-- ajout de la méthode d'incrémentation par click -->
     <!-- ajout de la méthode de changement d'image -->
-    <div class="containtImg">
+    <div class="container">
+      <div class="containerPair">
+        <ng-container
+          *ngFor="let upgrade of upgrades; let isPair = even; let i = index"
+        >
+          <div (click)="gestionClic(upgrade)" *ngIf="isPair" class="pair">
+            {{ upgrade.nom_name }}, {{ upgrade.num_cost }}
+          </div>
+        </ng-container>
+      </div>
+
       <img
         [src]="imageFontLvl1[imageIndex]"
         (click)="incrementalZone()"
         alt="Description de l'image"
       />
+
+      <div class="containerImpair">
+        <ng-container
+          *ngFor="let upgrade of upgrades; let isPair = even; let i = index"
+        >
+          <div (click)="gestionClic(upgrade)" *ngIf="!isPair" class="impair">
+            {{ upgrade.nom_name }}, {{ upgrade.num_cost }}
+          </div>
+        </ng-container>
+      </div>
     </div>
   </div>
 </div>

@@ -1,7 +1,10 @@
+import { Time } from '@angular/common';
 import { Component } from '@angular/core';
 import { Player } from 'src/app/component/models/player';
 import { Score } from 'src/app/component/models/score';
+import { Upgrade } from 'src/app/component/models/upgrade';
 import { PlayerService } from 'src/app/service/player.service';
+import { UpgradeService } from 'src/app/service/upgrade.service';
 
 @Component({
   selector: 'app-jeu',
@@ -21,31 +24,37 @@ export class JeuComponent {
     '../../assets/images/lvl1b.png',
     '../../assets/images/lvl1c.png',
   ];
+  intervalId!: number;
+  upgrades!: Upgrade[];
+  lvlDeMonUpgrade1: number = 0;
 
-  constructor(private playerService: PlayerService) {}
+  constructor(
+    private playerService: PlayerService,
+    private upgradeService: UpgradeService
+  ) {}
   ngOnInit(): void {
+    this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
+      this.upgrades = mesUpgrades;
+    });
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
     });
     this.getpts();
     this.pts = {
-      num_score: this.clickCount,
+      num_score: this.totalPoints,
     };
-    // chargement local des points
-    this.clickCount = Number(localStorage.getItem('Score'));
 
-    // chargement local de l'image
-    this.imageIndex = Number(localStorage.getItem('animation'));
+    this.savepts();
   }
 
   // methode incrémental
   incrementalZone() {
     this.animationImg();
-    this.clickCount = this.clickCount + 1;
+    this.clickCount += +1;
+    this.totalPoints += +1;
 
     // sauvegarde local des points
-    localStorage.setItem('Score', `${this.clickCount}`);
-    this.savepts();
+    localStorage.setItem('Score', `${this.totalPoints}`);
   }
 
   // methode pour changer d'image par click
@@ -60,10 +69,24 @@ export class JeuComponent {
   }
 
   savepts() {
-    this.pts.num_score = this.clickCount;
-    this.playerService.updateScore(this.pts).subscribe({
+    setInterval(() => {
+      this.pts.num_score = this.totalPoints;
+      this.playerService.updateScore(this.pts).subscribe({
+        next: (response) => {
+          // console.log('je save');
+        },
+        error: (error) => {
+          error;
+        },
+      });
+    }, 1000);
+  }
+
+  getpts() {
+    this.playerService.getProfil().subscribe({
       next: (response) => {
-        console.log('je save');
+        // console.log('je prend');
+        this.totalPoints = this.player.num_score;
       },
       error: (error) => {
         error;
@@ -71,15 +94,48 @@ export class JeuComponent {
     });
   }
 
-  getpts() {
-    this.playerService.getProfil().subscribe({
-      next: (response) => {
-        console.log('je prend');
-        this.clickCount = this.player.num_score;
-      },
-      error: (error) => {
-        error;
-      },
-    });
+  gestionClic(monUpgrade: Upgrade) {
+    console.log('je click ici', monUpgrade);
+    console.log(this.totalPoints);
+    console.log(this.lvlDeMonUpgrade1);
+    if (
+      monUpgrade.id_upgrade === 1 &&
+      this.totalPoints > monUpgrade.num_cost * (this.lvlDeMonUpgrade1 + 1)
+    ) {
+      console.log('je rentre');
+
+      console.log(this.lvlDeMonUpgrade1);
+
+      this.totalPoints -=
+        monUpgrade.num_cost +
+        monUpgrade.num_cost * ((this.lvlDeMonUpgrade1 + 1) / 10);
+
+      console.log(this.totalPoints);
+      this.train1();
+    }
+    if (monUpgrade.id_upgrade === 2) {
+      this.train2();
+    }
+    if (monUpgrade.id_upgrade === 3) {
+      this.train3();
+    }
+    if (monUpgrade.id_upgrade === 4) {
+      this.train4();
+    }
   }
+
+  train1() {
+    console.log('jincremente');
+    this.lvlDeMonUpgrade1++;
+    console.log(this.lvlDeMonUpgrade1);
+
+    this.intervalId = Number(
+      setInterval(() => {
+        this.totalPoints += 1;
+      }, 4000)
+    );
+  }
+  train2() {}
+  train3() {}
+  train4() {}
 }
