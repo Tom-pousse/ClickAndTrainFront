@@ -1,8 +1,10 @@
 import { Time } from '@angular/common';
 import { Component } from '@angular/core';
+import { Acquire } from 'src/app/component/models/acquire';
 import { Player } from 'src/app/component/models/player';
 
 import { Upgrade } from 'src/app/component/models/upgrade';
+import { AcquireService } from 'src/app/service/acquire.service';
 import { PlayerService } from 'src/app/service/player.service';
 import { UpgradeService } from 'src/app/service/upgrade.service';
 
@@ -15,7 +17,7 @@ export class JeuComponent {
   // compteur de click initialisé à zéro
   clickCount = 0;
   imageIndex = 0;
-
+  upgradePersoLvl!: Acquire;
   player!: Player;
   totalPoints: number = 0;
   // tableau de lien d'image
@@ -26,11 +28,12 @@ export class JeuComponent {
   ];
   intervalId!: number;
   upgrades!: Upgrade[];
-  lvlDeMonUpgrade1: number = 0;
+  lvlDeMonUpgrade1!: number;
 
   constructor(
     private playerService: PlayerService,
-    private upgradeService: UpgradeService
+    private upgradeService: UpgradeService,
+    private acquireService: AcquireService
   ) {}
   ngOnInit(): void {
     this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
@@ -39,6 +42,11 @@ export class JeuComponent {
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
       this.totalPoints = this.player.num_score;
+    });
+    this.acquireService.getProfilAcquire().subscribe((acquire) => {
+      this.upgradePersoLvl = acquire;
+      this.lvlDeMonUpgrade1 = acquire.num_enable;
+      console.log('acquire', this.upgradePersoLvl);
     });
 
     this.savepts();
@@ -67,11 +75,28 @@ export class JeuComponent {
 
   savepts() {
     setInterval(() => {
+      this.upgradePersoLvl.num_enable = this.lvlDeMonUpgrade1;
+      this.acquireService.updateUpgradeLvl(this.upgradePersoLvl).subscribe({
+        next: (response) => {
+          response.num_enable = this.upgradePersoLvl.num_enable;
+
+          // console.log(' ma response', response);
+          // console.log(this.player);
+        },
+        error: (error) => {
+          // console.log('mon erreur', error);
+
+          error;
+        },
+      });
+    }, 1000);
+    setInterval(() => {
       // console.log(this.totalPoints);
       this.player.num_score = this.totalPoints;
       this.playerService.updateScore(this.player).subscribe({
         next: (response) => {
           response.num_score = this.player.num_score;
+
           // console.log(' ma response', response);
           // console.log(this.player);
         },

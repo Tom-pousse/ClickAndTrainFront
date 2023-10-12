@@ -84,7 +84,7 @@ td {
 .pair2:hover {
   border: 1px solid black;
   font-size: large;
-  width: 40vh;
+  width: calc((100vw - 70vw));
   z-index: 2;
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
@@ -100,7 +100,7 @@ td {
 .impair1:hover {
   border: 1px solid black;
   font-size: large;
-  width: 40vh;
+  width: calc((100vw - 70vw));
   z-index: 2;
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
@@ -116,7 +116,7 @@ td {
 .impair3:hover {
   border: 1px solid black;
   font-size: large;
-  width: 40vh;
+  width: calc((100vw - 70vw));
   z-index: 2;
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
