@@ -1,5 +1,5 @@
 <div>
-  <div class="position">
+  <div class="positionDuTableau">
     <!-- pour afficher le nom du joueur si connecter -->
     <table *ngIf="player">
       <tr class="tableau">
@@ -33,7 +33,11 @@
         <ng-container
           *ngFor="let upgrade of upgrades; let isPair = even; let i = index"
         >
-          <div (click)="gestionClic(upgrade)" *ngIf="isPair" class="pair">
+          <div
+            (click)="gestionClic(upgrade)"
+            *ngIf="isPair"
+            class="pair{{ i }} baseUpgradePair"
+          >
             {{ upgrade.nom_name }}, {{ upgrade.num_cost }}
           </div>
         </ng-container>
@@ -49,7 +53,11 @@
         <ng-container
           *ngFor="let upgrade of upgrades; let isPair = even; let i = index"
         >
-          <div (click)="gestionClic(upgrade)" *ngIf="!isPair" class="impair">
+          <div
+            (click)="gestionClic(upgrade)"
+            *ngIf="!isPair"
+            class="impair{{ i }} baseUpgradeImpair"
+          >
             {{ upgrade.nom_name }}, {{ upgrade.num_cost }}
           </div>
         </ng-container>

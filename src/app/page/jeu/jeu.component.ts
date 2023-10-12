@@ -1,7 +1,7 @@
 import { Time } from '@angular/common';
 import { Component } from '@angular/core';
 import { Player } from 'src/app/component/models/player';
-import { Score } from 'src/app/component/models/score';
+
 import { Upgrade } from 'src/app/component/models/upgrade';
 import { PlayerService } from 'src/app/service/player.service';
 import { UpgradeService } from 'src/app/service/upgrade.service';
@@ -15,7 +15,7 @@ export class JeuComponent {
   // compteur de click initialisé à zéro
   clickCount = 0;
   imageIndex = 0;
-  pts!: Score;
+
   player!: Player;
   totalPoints: number = 0;
   // tableau de lien d'image
@@ -38,11 +38,8 @@ export class JeuComponent {
     });
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
+      this.totalPoints = this.player.num_score;
     });
-    this.getpts();
-    this.pts = {
-      num_score: this.totalPoints,
-    };
 
     this.savepts();
   }
@@ -70,34 +67,27 @@ export class JeuComponent {
 
   savepts() {
     setInterval(() => {
-      this.pts.num_score = this.totalPoints;
-      this.playerService.updateScore(this.pts).subscribe({
+      // console.log(this.totalPoints);
+      this.player.num_score = this.totalPoints;
+      this.playerService.updateScore(this.player).subscribe({
         next: (response) => {
-          // console.log('je save');
+          response.num_score = this.player.num_score;
+          // console.log(' ma response', response);
+          // console.log(this.player);
         },
         error: (error) => {
+          // console.log('mon erreur', error);
+
           error;
         },
       });
     }, 1000);
   }
 
-  getpts() {
-    this.playerService.getProfil().subscribe({
-      next: (response) => {
-        // console.log('je prend');
-        this.totalPoints = this.player.num_score;
-      },
-      error: (error) => {
-        error;
-      },
-    });
-  }
-
   gestionClic(monUpgrade: Upgrade) {
-    console.log('je click ici', monUpgrade);
-    console.log(this.totalPoints);
-    console.log(this.lvlDeMonUpgrade1);
+    // console.log('je click ici', monUpgrade);
+    // console.log(this.totalPoints);
+    // console.log(this.lvlDeMonUpgrade1);
     if (
       monUpgrade.id_upgrade === 1 &&
       this.totalPoints > monUpgrade.num_cost * (this.lvlDeMonUpgrade1 + 1)

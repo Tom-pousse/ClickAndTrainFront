@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Player } from '../component/models/player';
-import { Score } from '../component/models/score';
+
 import { LogPlayer } from '../component/models/logUser';
 import { ReponseConnexion } from '../component/models/reponseConnexion';
 import { Classement } from '../component/models/classement';
@@ -36,9 +36,9 @@ export class PlayerService {
     );
   }
 
-  updateScore(player: Score): Observable<Player> {
+  updateScore(player: Player): Observable<Player> {
     const headers = this.setHeaders();
-    // console.log('save', player);
+    // console.log('save', player.num_score);
     return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
       headers,
     });
@@ -51,7 +51,7 @@ export class PlayerService {
     });
   }
 
-  getStat(): Observable<Classement[]> {
+  getStat(): Observable<Player[]> {
     const headers = this.setHeaders();
     return this.http.get<Player[]>(`${this.baseApiUrl}/accueil`, {
       headers,

@@ -1,15 +1,18 @@
 /* mise en page de l'img */
 img {
-  height: calc(100vh - 13vh);
+  height: calc(100vh - 18vh);
   width: 60vw;
   border: 1px solid black;
 }
 /* mise en page du h1n  */
-.position {
+.positionDuTableau {
   display: flex;
   justify-content: center;
   text-align: center;
   flex-direction: column;
+}
+table {
+  border-collapse: collapse;
 }
 .tableau {
   display: flex;
@@ -29,22 +32,6 @@ td {
   display: flex;
   align-items: center;
   justify-content: space-around;
-  /* height: 100vh; */
-}
-
-.center-image {
-  text-align: center;
-}
-
-.pair,
-.impair {
-  display: flex;
-  flex-direction: column;
-
-  height: calc((100vh - 13vh) / 2);
-  border: 1px solid black;
-  background-color: #ffc400;
-  text-align: center;
 }
 
 .containerImpair {
@@ -52,4 +39,84 @@ td {
 }
 .containerPair {
   width: calc((100vw - 60vw) / 2);
+}
+
+.baseUpgradePair {
+  border-radius: 2rem 0rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16.9vh;
+  background-color: #ffc400;
+}
+
+.baseUpgradeImpair {
+  border-radius: 0rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 16.9vh;
+  background-color: #ffc400;
+}
+
+.pair0 {
+  border: 1px solid black;
+  top: calc(100vh - 82vh);
+  width: calc((100vw - 60vw) / 2);
+  position: absolute;
+  transition: width 0.8s;
+}
+
+.pair0:hover {
+  border: 1px solid black;
+  font-size: large;
+  width: calc((100vw - 70vw));
+  z-index: 2;
+  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+}
+.pair2 {
+  border: 1px solid black;
+  top: calc(100vh - 64.8vh);
+  width: calc((100vw - 60vw) / 2);
+  position: absolute;
+  transition: width 0.8s;
+}
+.pair2:hover {
+  border: 1px solid black;
+  font-size: large;
+  width: 40vh;
+  z-index: 2;
+  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+}
+.impair1 {
+  border: 1px solid black;
+  top: calc(100vh - 82vh);
+  width: calc((100vw - 60vw) / 2);
+  position: absolute;
+  right: 0;
+  transition: width 0.8s;
+}
+
+.impair1:hover {
+  border: 1px solid black;
+  font-size: large;
+  width: 40vh;
+  z-index: 2;
+  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+}
+.impair3 {
+  border: 1px solid black;
+  top: calc(100vh - 64.8vh);
+  width: calc((100vw - 60vw) / 2);
+  position: absolute;
+  right: 0;
+  transition: width 0.8s;
+}
+
+.impair3:hover {
+  border: 1px solid black;
+  font-size: large;
+  width: 40vh;
+  z-index: 2;
+  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
