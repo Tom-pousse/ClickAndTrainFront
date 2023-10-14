@@ -51,12 +51,12 @@ export class JeuComponent {
         this.lvlDeMonUpgrade1 = acquire.num_enable;
         console.log('acquire', this.upgradePersoLvl);
       }
-      this.savepts();
     });
     // logique de calcul des upgrade apres recup
     if (this.lvlDeMonUpgrade1 > 0) {
       this.lvlDeMonUpgrade1;
     }
+    this.savepts();
   }
 
   // methode incrémental
@@ -121,8 +121,18 @@ export class JeuComponent {
 
   train1() {
     this.lvlDeMonUpgrade1++;
+    this.upgradePersoLvl.num_enable = this.lvlDeMonUpgrade1;
     console.log('mon upgrade pass à =', this.lvlDeMonUpgrade1);
+    // this.acquireService.updateUpgradeLvl(this.upgradePersoLvl).subscribe({
+    //   next: (response) => {
+    //     console.log(' ma response save upgrade', response);
+    //   },
+    //   error: (error) => {
+    //     console.log('mon erreur save upgrade', error);
 
+    //     error;
+    //   },
+    // });
     this.intervalId = Number(
       setInterval(() => {
         this.totalPoints += 1;
@@ -134,8 +144,11 @@ export class JeuComponent {
   train4() {}
 
   savepts() {
+    console.log('mon resultat upgrade si > 0', this.lvlDeMonUpgrade1);
     if (this.lvlDeMonUpgrade1 > 0) {
       this.upgradePersoLvl.num_enable = this.lvlDeMonUpgrade1;
+      console.log('mon resultat upgrade si > 0', this.lvlDeMonUpgrade1);
+
       setInterval(() => {
         this.acquireService.updateUpgradeLvl(this.upgradePersoLvl).subscribe({
           next: (response) => {

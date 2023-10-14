@@ -1,3 +1,5 @@
+import { Acquire } from './acquire';
+
 export interface Player {
   num_id?: number;
   nom_pseudo: string;
@@ -6,4 +8,6 @@ export interface Player {
   //   nom_password_confirme?: string;
   num_score: number;
   boo_admin: boolean;
+  // ajout de l'acces à acquire
+  acquire?: Acquire[];
 }

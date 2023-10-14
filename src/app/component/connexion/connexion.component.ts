@@ -34,14 +34,17 @@ export class ConnexionComponent {
   constructor(private playerService: PlayerService, private router: Router) {}
 
   onInscription() {
-    console.log('aaaaa', this.inscription.value);
+    console.log('mon joueur', this.inscription.value);
     this.playerService
       .inscriptionUtilisateur(this.inscription.value)
       .subscribe({
         next: (response) => {
+          // renvoie vers la connection
           this.switchLog();
         },
         error: (error) => {
+          console.log(error);
+
           alert('quelque chose c est mal passé');
         },
       });
