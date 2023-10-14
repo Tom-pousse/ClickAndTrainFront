@@ -25,11 +25,13 @@ export class AcquireService {
       headers,
     });
   }
-  updateUpgradeLvl(acquisition: Acquire): Observable<Acquire> {
+
+  // voir avec formateur pourquoi ici ça marche pas mais  dans le service player ok ... pb initialisation cascade ? conflit requete ?
+  updateAcquireLvl(acquisition: Acquire): Observable<Acquire> {
     const headers = this.setHeaders();
-    // console.log('save', );
+    console.log('save', acquisition);
     return this.http.patch<Acquire>(
-      `http://localhost:3000/api/acquire/profil`,
+      `${this.baseApiUrl}/acquire/profil`,
       acquisition,
       {
         headers,

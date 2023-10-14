@@ -9,5 +9,5 @@ export interface Player {
   num_score: number;
   boo_admin: boolean;
   // ajout de l'acces à acquire
-  acquire?: Acquire[];
+  acquire: Acquire;
 }

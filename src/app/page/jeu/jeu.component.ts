@@ -39,23 +39,28 @@ export class JeuComponent {
   ngOnInit(): void {
     this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
       this.upgrades = mesUpgrades;
+      console.log('log de upgrades on init', this.upgrades);
     });
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
       this.totalPoints = this.player.num_score;
+      console.log('log de player on init', this.player);
+      console.log('log de totalPoints on init', this.totalPoints);
     });
     this.acquireService.getProfilAcquire().subscribe((acquire) => {
       if (acquire) {
         this.upgradePersoLvl = acquire;
+        console.log('log de upgradePersoLvl on init', this.upgradePersoLvl);
 
         this.lvlDeMonUpgrade1 = acquire.num_enable;
-        console.log('acquire', this.upgradePersoLvl);
+        console.log('lvlDeMonUpgrade1', this.lvlDeMonUpgrade1);
+        console.log('acquire.num_enable', acquire.num_enable);
       }
     });
     // logique de calcul des upgrade apres recup
-    if (this.lvlDeMonUpgrade1 > 0) {
-      this.lvlDeMonUpgrade1;
-    }
+    // if (this.lvlDeMonUpgrade1 > 0) {
+    //   this.lvlDeMonUpgrade1;
+    // }
     this.savepts();
   }
 
@@ -82,7 +87,7 @@ export class JeuComponent {
 
   gestionClic(monUpgrade: Upgrade) {
     this.prixAmelioration1 = monUpgrade.num_cost;
-    console.log(this.prixAmelioration1);
+    console.log('le prixAmelioration1', this.prixAmelioration1);
 
     if (
       monUpgrade.id_upgrade === 1 &&
@@ -99,9 +104,9 @@ export class JeuComponent {
       this.train1();
     }
     if (
-      monUpgrade.id_upgrade === 1 &&
+      monUpgrade.id_upgrade === 0 &&
       this.totalPoints >= monUpgrade.num_cost &&
-      this.upgradePersoLvl.boo_status === false
+      this.upgradePersoLvl.boo_status === true
     ) {
       this.totalPoints -= monUpgrade.num_cost;
       this.upgradePersoLvl.boo_status = true;
@@ -121,47 +126,50 @@ export class JeuComponent {
 
   train1() {
     this.lvlDeMonUpgrade1++;
-    this.upgradePersoLvl.num_enable = this.lvlDeMonUpgrade1;
+    this.player.acquire.num_enable = this.lvlDeMonUpgrade1;
     console.log('mon upgrade pass à =', this.lvlDeMonUpgrade1);
-    // this.acquireService.updateUpgradeLvl(this.upgradePersoLvl).subscribe({
-    //   next: (response) => {
-    //     console.log(' ma response save upgrade', response);
-    //   },
-    //   error: (error) => {
-    //     console.log('mon erreur save upgrade', error);
+    console.log(
+      'je transfere dans this.player.acquire.num_enable =',
+      this.lvlDeMonUpgrade1
+    );
+    console.log(
+      'je vérifie this.player.acquire.num_enable',
+      this.player.acquire.num_enable
+    );
 
-    //     error;
-    //   },
-    // });
     this.intervalId = Number(
       setInterval(() => {
         this.totalPoints += 1;
       }, 4000)
     );
+    this.saveAmelioration();
   }
   train2() {}
   train3() {}
   train4() {}
 
-  savepts() {
-    console.log('mon resultat upgrade si > 0', this.lvlDeMonUpgrade1);
-    if (this.lvlDeMonUpgrade1 > 0) {
-      this.upgradePersoLvl.num_enable = this.lvlDeMonUpgrade1;
-      console.log('mon resultat upgrade si > 0', this.lvlDeMonUpgrade1);
+  saveAmelioration() {
+    this.upgradePersoLvl.num_enable = this.lvlDeMonUpgrade1;
+    this.player.acquire = this.upgradePersoLvl;
+    console.log('mon resultat upgrade si  0 <', this.lvlDeMonUpgrade1);
+    if (this.lvlDeMonUpgrade1 >= 0) {
+      console.log('suis-je sup à 0 <', this.lvlDeMonUpgrade1);
 
-      setInterval(() => {
-        this.acquireService.updateUpgradeLvl(this.upgradePersoLvl).subscribe({
-          next: (response) => {
-            console.log(' ma response save upgrade', response);
-          },
-          error: (error) => {
-            console.log('mon erreur save upgrade', error);
+      this.playerService.updateLvlUpgrade(this.player.acquire).subscribe({
+        next: (response) => {
+          console.log(' ma response save acquire', response);
+          console.log('?????', this.player.acquire.num_enable);
+        },
+        error: (error) => {
+          console.log('mon erreur save acquire', error);
 
-            error;
-          },
-        });
-      }, 1000);
+          error;
+        },
+      });
     }
+  }
+
+  savepts() {
     setInterval(() => {
       // console.log(this.totalPoints);
       this.player.num_score = this.totalPoints;

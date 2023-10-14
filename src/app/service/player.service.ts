@@ -6,6 +6,7 @@ import { Player } from '../component/models/player';
 import { LogPlayer } from '../component/models/logUser';
 import { ReponseConnexion } from '../component/models/reponseConnexion';
 import { Classement } from '../component/models/classement';
+import { Acquire } from '../component/models/acquire';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,19 @@ export class PlayerService {
     return this.http.post<ReponseConnexion>(
       `${this.baseApiUrl}/auth/login`,
       data
+    );
+  }
+
+  // voir avec formateur pourquoi ici ça marche mais pas dans le service aquire ... pb initialisation cascade ? conflit requete ?
+  updateLvlUpgrade(player: Acquire): Observable<Acquire> {
+    const headers = this.setHeaders();
+    // console.log('save', player.num_score);
+    return this.http.patch<Acquire>(
+      `http://localhost:3000/api/acquire/profil`,
+      player,
+      {
+        headers,
+      }
     );
   }
 
