@@ -17,6 +17,7 @@ export class ConnexionComponent {
     nom_password: new FormControl(''),
     // nom_password_confirme: new FormControl(''),
     num_score: new FormControl(0),
+    num_click: new FormControl(0),
     boo_admin: new FormControl(false),
   });
   connexion: FormGroup = new FormGroup({

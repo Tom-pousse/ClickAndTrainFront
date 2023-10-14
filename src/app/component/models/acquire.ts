@@ -3,4 +3,5 @@ export interface Acquire {
   id_players?: number;
   boo_status: boolean;
   num_enable: number;
+  num_value_upgrade: number;
 }
