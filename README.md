@@ -224,7 +224,11 @@ transmettreValeurProfil() {
   this.valueModalProfil.emit(false);
 ```
 
-## Etape 7 :
+## Etape 7 probleme d'iintialisation de la table Acquire:
+
+j'ai du activé la cascade pour inséré les valeurs dans ma table acquire depuis player à la création du compte.
+problème à vérifier avec formateur cela me bloquais l'update via le service acquire ? (les donner via la méthode update n'écrasais pas les anciennes)
+solution trouvé : update depuis player avec observable sur acquire pour mettre à jour.
 
 ```
 
