@@ -41,13 +41,9 @@ export class PlayerService {
   updateLvlUpgrade(player: Acquire): Observable<Acquire> {
     const headers = this.setHeaders();
     // console.log('save', player.num_score);
-    return this.http.patch<Acquire>(
-      `http://localhost:3000/api/acquire/profil`,
-      player,
-      {
-        headers,
-      }
-    );
+    return this.http.patch<Acquire>(`http://localhost:3000/api/jeu`, player, {
+      headers,
+    });
   }
 
   updateScore(player: Player): Observable<Player> {
