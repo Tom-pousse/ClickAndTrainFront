@@ -272,11 +272,13 @@ export class JeuComponent {
       'audioElement'
     ) as HTMLAudioElement;
     // currentTime permet de relancer le son à 0
-    sonTrainClic.currentTime = 0;
-    // playbackRate permet d'accelerer la vitesse du son
-    sonTrainClic.playbackRate = 2;
-    sonTrainClic.play();
-    console.log('jenvoie mon son');
+    if (sonTrainClic) {
+      sonTrainClic.currentTime = 0;
+      // playbackRate permet d'accelerer la vitesse du son
+      sonTrainClic.playbackRate = 2;
+      sonTrainClic.play();
+      console.log('jenvoie mon son');
+    }
   }
 
   ActivationDuSon(value: boolean) {
