@@ -1,18 +1,23 @@
-<div>
-  <h1>classement</h1>
-  <div>
-    <table border="1" *ngIf="player">
-      <tr>
-        <th>Pseudo</th>
-        <th>Score</th>
-      </tr>
-      <tr *ngFor="let user of player">
-        <td>{{ user.nom_pseudo }}</td>
-        <td>{{ user.num_score }}</td>
-      </tr>
-    </table>
-    <div *ngIf="!player">
-      <span>Connectez vous pour voir le classement des joueurs</span>
+<div class="modal">
+  <div class="modal-content">
+    <h1>classement</h1>
+    <div>
+      <table border="1" *ngIf="player">
+        <tr>
+          <th>Pseudo</th>
+          <th>Score</th>
+        </tr>
+        <tr *ngFor="let user of player">
+          <td>{{ user.nom_pseudo }}</td>
+          <td>{{ user.num_score }}</td>
+        </tr>
+      </table>
+      <div *ngIf="!player">
+        <span>Connectez vous pour voir le classement des joueurs</span>
+      </div>
+    </div>
+    <div class="bouton">
+      <button (click)="transmettreValeurClassement()">Fermer</button>
     </div>
   </div>
 </div>

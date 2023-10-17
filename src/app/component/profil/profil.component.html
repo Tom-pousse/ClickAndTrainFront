@@ -14,10 +14,9 @@
         <input type="radio" name="animation" />
       </div>
       <div>
-        <label for="Son">Son</label> <input type="radio" name="Son" /><input
-          type="radio"
-          name="Son"
-        />
+        <label for="Son">Son</label>
+        <input (click)="son(true)" type="radio" name="Son" />
+        <input (click)="son(false)" type="radio" name="Son" />
       </div>
       <div>
         <label for="musique">Musique</label>

@@ -8,7 +8,7 @@ import { JeuComponent } from './page/jeu/jeu.component';
 import { ConnexionComponent } from './component/connexion/connexion.component';
 import { NavBarComponent } from './component/nav-bar/nav-bar.component';
 import { ProfilComponent } from './component/profil/profil.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -20,6 +20,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProfilComponent,
   ],
   imports: [
+    FormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,

@@ -9,10 +9,14 @@ import { Player } from '../models/player';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
-  // je déclare ma valeur false pour cacher la fenettrre modal
+  // je stock la valeur de profil pour la transmettre à jeu
+  valeurPourJeuDuSon!: boolean;
+  // je déclare ma valeur false pour cacher la fenettrre modal log
   hideLogModal: boolean = false;
-  // je déclare ma valeur false pour cacher la fenettrre modal
+  // je déclare ma valeur false pour cacher la fenettrre modal profil
   hideProfilModal: boolean = false;
+  // je déclare ma valeur false pour cacher la fenettrre modal classement
+  hideClassementModal: boolean = false;
 
   constructor(private playerService: PlayerService) {}
 
@@ -36,5 +40,20 @@ export class NavBarComponent {
   retourDeLogin(valueLog: boolean) {
     console.log('La valeur retour', valueLog);
     this.hideLogModal = valueLog;
+  }
+  openModalClassement() {
+    this.hideClassementModal = true;
+  }
+
+  // je recupère l'info de classement quand la modal ce ferme et la copie dans ma variable hide pour remettre à false
+  retourDeClassement(valueLog: boolean) {
+    console.log('La valeur retour', valueLog);
+    this.hideClassementModal = valueLog;
+  }
+
+  // je recup la valeur de profil pour la transmettre à jeu
+  infoPourJeu(valueLog: boolean) {
+    console.log('La valeur retour', valueLog);
+    this.valeurPourJeuDuSon = valueLog;
   }
 }

@@ -1,16 +1,16 @@
 <div class="navbar">
-  <a href="jeu">Jeu</a>
   <!-- methode ou click pour open modal profil -->
   <a (click)="openModalProfil()">Profil</a>
 
   <!-- methode ou click pour open modal connexion/inscription-->
   <a (click)="openModalLog()">Connexion</a>
-  <a href="accueil">Classement</a>
+  <a (click)="openModalClassement()">Classement</a>
 </div>
 
 <!-- dans ma methode retourdeprofil je recupere la valeur de valuemodal profil pour fermer la modal  -->
 <!-- ngif pour cacher/montrer la modal -->
 <app-profil
+  (isCheck)="infoPourJeu($event)"
   (valueModalProfil)="retourDeProfil($event)"
   *ngIf="hideProfilModal"
 ></app-profil>
@@ -20,3 +20,10 @@
   (valueModalLog)="retourDeLogin($event)"
   *ngIf="hideLogModal"
 ></app-connexion>
+
+<app-accueil
+  (valueClassementProfil)="retourDeClassement($event)"
+  *ngIf="hideClassementModal"
+></app-accueil>
+
+<app-jeu [maValeurDeProfil]="valeurPourJeuDuSon"></app-jeu>

@@ -5,6 +5,10 @@ img {
   border: 1px solid black;
   cursor: pointer;
 }
+.flexBox {
+  display: flex;
+  flex-direction: column;
+}
 /* mise en page du h1n  */
 .positionDuTableau {
   background-color: black;
