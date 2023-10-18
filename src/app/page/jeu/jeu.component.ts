@@ -25,6 +25,9 @@ export class JeuComponent {
   // compteur d'image initialisé à zéro
   imageIndex: number = 0;
 
+  // pour activer l'animation auto de l'image
+  compteurImgAuto: number = 0;
+
   // le joueur
   player!: Player;
 
@@ -155,6 +158,7 @@ export class JeuComponent {
         //   });
         // }
       });
+      this.animAutoByUpgrade();
       this.monTabIm();
       this.savepts();
     });
@@ -199,6 +203,15 @@ export class JeuComponent {
     this.monTabIm();
   }
 
+  animAutoByUpgrade() {
+    if (this.compteurImgAuto === 0) {
+      setInterval(() => {
+        this.animationImg();
+      }, 750);
+    }
+    this.compteurImgAuto += 1;
+  }
+
   gestionClic(monUpgrade: Upgrade) {
     // recupérer lid, la valeur de l'amélioration
     // console.log('jai cliquer sur', monUpgrade);
@@ -217,8 +230,8 @@ export class JeuComponent {
         this.methodeClicker(monIdSelect!, monUpgrade);
         this.savegardeQuandUpgrade();
         console.log('si > 0', this.player.acquire);
-
         monUpgrade.num_cost = Math.round(monIdSelect!.num_value_upgrade);
+        this.animAutoByUpgrade();
       }
       if (
         monIdSelect!.num_enable! === 0 &&
@@ -229,6 +242,7 @@ export class JeuComponent {
         console.log('si = 0', this.player.acquire);
 
         monUpgrade.num_cost = Math.round(monIdSelect!.num_value_upgrade);
+        this.animAutoByUpgrade();
       }
     }
   }
