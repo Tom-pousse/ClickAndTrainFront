@@ -10,7 +10,8 @@
 <!-- dans ma methode retourdeprofil je recupere la valeur de valuemodal profil pour fermer la modal  -->
 <!-- ngif pour cacher/montrer la modal -->
 <app-profil
-  (isCheck)="infoPourJeu($event)"
+  (sonSelectionne)="infoPourJeuDuSon($event)"
+  (animSelectionne)="infoPourJeuDeAnim($event)"
   (valueModalProfil)="retourDeProfil($event)"
   *ngIf="hideProfilModal"
 ></app-profil>
@@ -26,4 +27,7 @@
   *ngIf="hideClassementModal"
 ></app-accueil>
 
-<app-jeu [maValeurDeProfil]="valeurPourJeuDuSon"></app-jeu>
+<app-jeu
+  [maValeurDeProfilSon]="valeurPourJeuDuSon"
+  [maValeurDeProfilAnim]="valeurPourJeuDeAnim"
+></app-jeu>

@@ -9,8 +9,10 @@ import { Player } from '../models/player';
   styleUrls: ['./nav-bar.component.css'],
 })
 export class NavBarComponent {
-  // je stock la valeur de profil pour la transmettre à jeu
+  // je stock la valeur de 'radio son' de profil pour la transmettre à jeu
   valeurPourJeuDuSon!: boolean;
+  // je stock la valeur de 'radio anim' profil pour la transmettre à jeu
+  valeurPourJeuDeAnim!: boolean;
   // je déclare ma valeur false pour cacher la fenettrre modal log
   hideLogModal: boolean = false;
   // je déclare ma valeur false pour cacher la fenettrre modal profil
@@ -52,8 +54,13 @@ export class NavBarComponent {
   }
 
   // je recup la valeur de profil pour la transmettre à jeu
-  infoPourJeu(valueLog: boolean) {
-    console.log('La valeur retour', valueLog);
+  infoPourJeuDuSon(valueLog: boolean) {
+    // console.log('La valeur retour', valueLog);
     this.valeurPourJeuDuSon = valueLog;
+  }
+
+  infoPourJeuDeAnim(valueLog: boolean) {
+    // console.log('La valeur retour', valueLog);
+    this.valeurPourJeuDeAnim = valueLog;
   }
 }

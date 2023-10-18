@@ -15,9 +15,8 @@ import { UpgradeService } from 'src/app/service/upgrade.service';
   styleUrls: ['./jeu.component.css'],
 })
 export class JeuComponent {
-  @Input() maValeurDeProfil!: boolean;
-  // boolean pour activer le son ou pas
-  sonActiver: boolean = true;
+  @Input() maValeurDeProfilSon!: boolean;
+  @Input() maValeurDeProfilAnim!: boolean;
 
   // compteur de click initialisé à zéro
   clickCount: number = 0;
@@ -158,6 +157,7 @@ export class JeuComponent {
         //   });
         // }
       });
+      this.ActivationDuSon();
       this.animAutoByUpgrade();
       this.monTabIm();
       this.savepts();
@@ -192,25 +192,6 @@ export class JeuComponent {
   }
 
   // methode pour changer d'image par click
-  animationImg() {
-    if (this.imageIndex === this.selectImg.length - 1) {
-      this.imageIndex = 0;
-    } else {
-      this.imageIndex = this.imageIndex + 1;
-    }
-    // sauvegarde local de l'image
-    localStorage.setItem('animation', `${this.imageIndex}`);
-    this.monTabIm();
-  }
-
-  animAutoByUpgrade() {
-    if (this.compteurImgAuto === 0) {
-      setInterval(() => {
-        this.animationImg();
-      }, 750);
-    }
-    this.compteurImgAuto += 1;
-  }
 
   gestionClic(monUpgrade: Upgrade) {
     // recupérer lid, la valeur de l'amélioration
@@ -295,8 +276,39 @@ export class JeuComponent {
     }
   }
 
-  ActivationDuSon(value: boolean) {
-    console.log('La valeur retour', value);
-    this.sonActiver = value;
+  ActivationDuSon() {
+    console.log('La valeur retour', this.maValeurDeProfilSon);
+    if (this.maValeurDeProfilSon === undefined) {
+      this.maValeurDeProfilSon = true;
+    } else {
+      console.log('non je reste la');
+    }
+  }
+
+  animationImg() {
+    console.log('log anim value', this.maValeurDeProfilAnim);
+
+    if (
+      this.maValeurDeProfilAnim === undefined ||
+      this.maValeurDeProfilAnim === true
+    ) {
+      if (this.imageIndex === this.selectImg.length - 1) {
+        this.imageIndex = 0;
+      } else {
+        this.imageIndex = this.imageIndex + 1;
+      }
+      // sauvegarde local de l'image
+      localStorage.setItem('animation', `${this.imageIndex}`);
+      this.monTabIm();
+    } else this.imageIndex = 1;
+  }
+
+  animAutoByUpgrade() {
+    if (this.compteurImgAuto === 0) {
+      setInterval(() => {
+        this.animationImg();
+      }, 750);
+    }
+    this.compteurImgAuto += 1;
   }
 }

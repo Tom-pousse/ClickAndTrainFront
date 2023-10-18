@@ -10,13 +10,13 @@
       </div>
       <div>
         <label for="animation">Animation</label>
-        <input type="radio" name="animation" />
-        <input type="radio" name="animation" />
+        <input (click)="anim(false)" type="radio" name="animation" />
+        <input (click)="anim(true)" type="radio" name="animation" />
       </div>
       <div>
         <label for="Son">Son</label>
-        <input (click)="son(true)" type="radio" name="Son" />
         <input (click)="son(false)" type="radio" name="Son" />
+        <input (click)="son(true)" type="radio" name="Son" />
       </div>
       <div>
         <label for="musique">Musique</label>
