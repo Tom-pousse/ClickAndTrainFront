@@ -22,10 +22,10 @@
   *ngIf="hideLogModal"
 ></app-connexion>
 
-<app-accueil
+<app-classement
   (valueClassementProfil)="retourDeClassement($event)"
   *ngIf="hideClassementModal"
-></app-accueil>
+></app-classement>
 
 <app-jeu
   [maValeurDeProfilSon]="valeurPourJeuDuSon"

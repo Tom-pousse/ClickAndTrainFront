@@ -1,38 +1,42 @@
 <div class="modal">
   <div class="modal-content">
-    <form>
-      <h2>Profil</h2>
-      <div *ngIf="player">
-        <div>{{ player.nom_pseudo }}</div>
-        <div>{{ player.nom_email }}</div>
-        <div>{{ player.num_score }}</div>
-        <div *ngIf="player.boo_admin === true">#admin</div>
-      </div>
-      <div>
-        <label for="animation">Animation</label>
-        <input (click)="anim(false)" type="radio" name="animation" />
-        <input (click)="anim(true)" type="radio" name="animation" />
-      </div>
-      <div>
-        <label for="Son">Son</label>
-        <input (click)="son(false)" type="radio" name="Son" />
-        <input (click)="son(true)" type="radio" name="Son" />
-      </div>
-      <div>
-        <label for="musique">Musique</label>
-        <input type="radio" name="musique" /><input
-          type="radio"
-          name="musique"
-        />
-      </div>
-
-      <div>
-        <button (click)="transmettreValeurProfil()">Fermer</button>
-        <button type="submit">Modifier</button>
-      </div>
-    </form>
-    <div>
+    <div class="bouton">
       <button (click)="deconnexion()">Deconnexion</button>
+    </div>
+    <h2>Profil</h2>
+    <div class="tableauPosition">
+      <table border="1" *ngIf="player">
+        <tr>
+          <th>Pseudo</th>
+          <td>{{ player.nom_pseudo }}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>{{ player.nom_email }}</td>
+        </tr>
+        <tr>
+          <th>Score</th>
+          <td>{{ player.num_score }}</td>
+        </tr>
+
+        <!-- <tr>
+          <td>{{ player.nom_pseudo }}</td>
+          <td>{{ player.nom_email }}</td>
+          <td>{{ player.num_score }}</td>
+        </tr> -->
+      </table>
+    </div>
+    <div *ngFor="let unParam of param">
+      <!-- <div>{{ unParam.nom_label }}</div> -->
+      <div *ngIf="unParam">
+        <label for=""></label>
+        <input type="radio" id="" />
+        <input type="radio" id="" />
+      </div>
+    </div>
+
+    <div>
+      <button (click)="transmettreValeurProfil()">Fermer</button>
     </div>
   </div>
 </div>

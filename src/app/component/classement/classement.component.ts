@@ -4,11 +4,11 @@ import { Player } from 'src/app/component/models/player';
 import { PlayerService } from 'src/app/service/player.service';
 
 @Component({
-  selector: 'app-accueil',
-  templateUrl: './accueil.component.html',
-  styleUrls: ['./accueil.component.css'],
+  selector: 'app-classement',
+  templateUrl: './classement.component.html',
+  styleUrls: ['./classement.component.css'],
 })
-export class AccueilComponent {
+export class ClassementComponent {
   player!: Classement[];
   @Output() valueClassementProfil: EventEmitter<boolean> =
     new EventEmitter<boolean>();

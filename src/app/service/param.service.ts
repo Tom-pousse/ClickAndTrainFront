@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { Upgrade } from '../component/models/upgrade';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Param } from '../component/models/param';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UpgradeService {
+export class ParamService {
   private baseApiUrl = 'http://localhost:3000/api';
 
   constructor(private http: HttpClient) {}
@@ -19,18 +19,11 @@ export class UpgradeService {
     return headers;
   }
 
-  getUpgrade(): Observable<Upgrade[]> {
+  getParam(): Observable<Param[]> {
     const headers = this.setHeaders();
     // console.log('je suis ici');
 
-    return this.http.get<Upgrade[]>(`${this.baseApiUrl}/upgrade`, {
-      headers,
-    });
-  }
-
-  getOneUpgrade(): Observable<Upgrade> {
-    const headers = this.setHeaders();
-    return this.http.get<Upgrade>(`${this.baseApiUrl}/upgrade`, {
+    return this.http.get<Param[]>(`${this.baseApiUrl}/param`, {
       headers,
     });
   }

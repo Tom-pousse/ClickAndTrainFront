@@ -25,6 +25,7 @@ table {
   display: flex;
   height: 5vh;
 }
+
 th,
 td {
   color: white;
@@ -33,7 +34,7 @@ td {
   align-items: center;
   height: 90%;
   width: 100%;
-  border: 1px solid black;
+  border: 1px solid rgb(142, 142, 142);
 }
 
 .container {
@@ -72,11 +73,12 @@ td {
 /* gauche upgrade */
 .pair0 {
   border: 1px solid black;
-  top: calc(100vh - 82vh);
+  top: calc(100vh - 16.6vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
   transition: width 0.8s;
   right: 0;
+  border-radius: 2rem 0rem;
 }
 
 .pair0:hover {
@@ -91,8 +93,8 @@ td {
   top: calc(100vh - 65.6vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
+  left: 0;
   transition: width 0.8s;
-  right: 0;
 }
 
 .pair6:hover {
@@ -110,7 +112,7 @@ td {
   width: calc((100vw - 60vw) / 2);
   position: absolute;
   transition: width 0.8s;
-  right: 0;
+  left: 0;
 }
 
 .impair5:hover {
@@ -121,12 +123,13 @@ td {
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
 .pair4 {
-  border: 1px solid #000000;
+  border: 1px solid black;
   top: calc(100vh - 32.9vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
   transition: width 0.8s;
   right: 0;
+  border-radius: 2rem 0rem;
 }
 .pair4:hover {
   border: 1px solid black;
@@ -138,11 +141,11 @@ td {
 
 .pair2 {
   border: 1px solid black;
-  top: calc(100vh - 16.6vh);
+  top: calc(100vh - 32.9vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
   transition: width 0.8s;
-  right: 0;
+  left: 0;
 }
 .pair2:hover {
   border: 1px solid black;
@@ -151,7 +154,7 @@ td {
   z-index: 2;
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
-/* droite upgrade */
+/* pair */
 .impair1 {
   border: 1px solid black;
   top: calc(100vh - 82vh);
@@ -159,6 +162,7 @@ td {
   position: absolute;
   left: 0;
   transition: width 0.8s;
+  border-radius: 0rem 2rem;
 }
 
 .impair1:hover {
@@ -170,11 +174,12 @@ td {
 }
 .impair7 {
   border: 1px solid black;
-  top: calc(100vh - 65.6vh);
+  top: calc(100vh - 16.6vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
   left: 0;
   transition: width 0.8s;
+  border-radius: 0rem 2rem;
 }
 
 .impair7:hover {
@@ -184,13 +189,15 @@ td {
   z-index: 2;
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
+
+/* ------- ici impair */
 .impair3 {
   border: 1px solid black;
-  top: calc(100vh - 49.2vh);
+  top: calc(100vh - 82vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
-  left: 0;
   transition: width 0.8s;
+  right: 0;
 }
 
 .impair3:hover {
@@ -202,10 +209,10 @@ td {
 }
 .impair9 {
   border: 1px solid black;
-  top: calc(100vh - 32.9vh);
+  top: calc(100vh - 65.6vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
-  left: 0;
+  right: 0;
   transition: width 0.8s;
 }
 
@@ -220,10 +227,10 @@ td {
 .pair8 {
   border-radius: 2rem 0rem;
   border: 1px solid black;
-  top: calc(100vh - 16.6vh);
+  top: calc(100vh - 49.2vh);
   width: calc((100vw - 60vw) / 2);
   position: absolute;
-  left: 0;
+  right: 0;
   transition: width 0.8s;
 }
 

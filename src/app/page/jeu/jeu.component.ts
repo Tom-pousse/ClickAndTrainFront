@@ -1,13 +1,13 @@
-import { Time } from '@angular/common';
-import { Component, Input } from '@angular/core';
-import { elementAt, find } from 'rxjs';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { Acquire } from 'src/app/component/models/acquire';
+import { AcquirePatch } from 'src/app/component/models/acquirePatch';
 import { Player } from 'src/app/component/models/player';
-
+import { forkJoin } from 'rxjs';
 import { Upgrade } from 'src/app/component/models/upgrade';
-
+import { AcquireService } from 'src/app/service/acquire.service';
 import { PlayerService } from 'src/app/service/player.service';
 import { UpgradeService } from 'src/app/service/upgrade.service';
+import { PlayerScore } from 'src/app/component/models/playerScore';
 
 @Component({
   selector: 'app-jeu',
@@ -17,9 +17,15 @@ import { UpgradeService } from 'src/app/service/upgrade.service';
 export class JeuComponent {
   @Input() maValeurDeProfilSon!: boolean;
   @Input() maValeurDeProfilAnim!: boolean;
+  testDeId!: boolean;
+
+  acquire!: Acquire;
 
   // compteur de click initialisé à zéro
   clickCount: number = 0;
+  // total des points du joueur
+  totalPoints: number = 0;
+  MonEnvoieDeScore!: PlayerScore;
 
   // compteur d'image initialisé à zéro
   imageIndex: number = 0;
@@ -30,8 +36,11 @@ export class JeuComponent {
   // le joueur
   player!: Player;
 
-  // total des points du joueur
-  totalPoints: number = 0;
+  // les aquisition du joueur
+  playerAcquisition!: Acquire[];
+  monAcquisition!: Acquire;
+  monAcquisitionPourPatch!: AcquirePatch;
+
   selectImg: string[] = [
     '../../assets/images/lvl1a.png',
     '../../assets/images/lvl1b.png',
@@ -128,18 +137,24 @@ export class JeuComponent {
 
   constructor(
     private playerService: PlayerService,
-    private upgradeService: UpgradeService
+    private upgradeService: UpgradeService,
+    private acquireService: AcquireService,
+    private cdr: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
-      this.totalPoints = this.player.num_score;
-      this.clickCount = this.player.num_click;
-      // console.log('log de player on init', this.player);
+
+      console.log('log de player on init', this.player.num_score);
       // console.log('log de totalPoints on init', this.totalPoints);
       // console.log(this.player.acquire);
       this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
         this.upgrades = mesUpgrades;
+
+        this.acquireService.getAcquire().subscribe((mesAcquires) => {
+          this.playerAcquisition = mesAcquires;
+          // console.log('log de mesAcquires', mesAcquires);
+        });
 
         // tentative pour récupérer les valeur on init en front
         // if (this.upgrades && this.player) {
@@ -156,112 +171,41 @@ export class JeuComponent {
         //     // console.log( coresspondanceId)
         //   });
         // }
+        this.ActivationDuSon();
+        this.animationImg();
+        this.monTabIm();
+        // this.savepts();
+        localStorage.getItem('animation');
       });
-      this.ActivationDuSon();
-      this.animAutoByUpgrade();
-      this.monTabIm();
-      this.savepts();
     });
-  }
-  monTabIm() {
-    this.tableau.forEach((element) => {
-      // Pour chaque élément dans "tableau"
-      const id = element.id;
-
-      const acquisition = this.player.acquire.find(
-        (x) => x.id_upgrade === id && x.num_enable > 0
-      );
-
-      if (acquisition) {
-        this.selectImg = element.tableau;
-      }
-    });
-
-    console.log('je log', this.selectImg);
   }
 
   // methode incrémental
   incrementalZone() {
     this.animationImg();
-    this.clickCount += +1;
-    this.totalPoints += +1;
+    this.player.num_score += 1;
+    this.player.num_click += 1;
 
     // sauvegarde local des points
-    localStorage.setItem('Score', `${this.totalPoints}`);
+    localStorage.setItem('Score', `${this.player.num_score}`);
     this.sonTrain();
   }
+  animationImg() {
+    // voir pour mettre cette condition si désactiver l'animation
+    // if (this.maValeurDeProfilAnim === true || undefined) {
+    // } else this.imageIndex = 1;
 
-  // methode pour changer d'image par click
-
-  gestionClic(monUpgrade: Upgrade) {
-    // recupérer lid, la valeur de l'amélioration
-    // console.log('jai cliquer sur', monUpgrade);
-    const monIdSelect = this.player.acquire.find(
-      (x) => x.id_upgrade === monUpgrade.id_upgrade
-    );
-    // console.log('je récup', monIdSelect);
-
-    // condition du click id
-    if (monUpgrade.id_upgrade === monIdSelect?.id_upgrade) {
-      // si mon num-enable est >= 0  et que y a assez de points
-      if (
-        monIdSelect!.num_enable! > 0 &&
-        this.totalPoints > Math.round(monIdSelect!.num_value_upgrade)
-      ) {
-        this.methodeClicker(monIdSelect!, monUpgrade);
-        this.savegardeQuandUpgrade();
-        console.log('si > 0', this.player.acquire);
-        monUpgrade.num_cost = Math.round(monIdSelect!.num_value_upgrade);
-        this.animAutoByUpgrade();
-      }
-      if (
-        monIdSelect!.num_enable! === 0 &&
-        this.totalPoints > Math.round(monIdSelect!.num_value_upgrade)
-      ) {
-        this.methodeClicker(monIdSelect!, monUpgrade);
-        this.savegardeQuandUpgrade();
-        console.log('si = 0', this.player.acquire);
-
-        monUpgrade.num_cost = Math.round(monIdSelect!.num_value_upgrade);
-        this.animAutoByUpgrade();
-      }
+    if (this.imageIndex === this.selectImg.length - 1) {
+      this.imageIndex = 0;
+    } else {
+      this.imageIndex = this.imageIndex + 1;
     }
+    // sauvegarde local de l'image
+    localStorage.setItem('animation', `${this.imageIndex}`);
+    this.monTabIm();
   }
 
-  savepts() {
-    console.log('sauvegarde des points et click ok');
-    setInterval(() => {
-      this.player.num_score = this.totalPoints;
-      this.player.num_click = this.clickCount;
-      this.playerService.updateScore(this.player).subscribe({
-        next: (response) => {
-          response;
-        },
-        error: (error) => {
-          console.log('mon erreur ici ?', error);
-
-          error;
-        },
-      });
-    }, 1000);
-  }
-
-  methodeClicker(monIdSelect: Acquire, monUpgrade: Upgrade) {
-    monIdSelect!.num_enable! += 1;
-    this.totalPoints -= Math.round(monIdSelect!.num_value_upgrade);
-    monIdSelect!.num_value_upgrade = Math.round(
-      monIdSelect!.num_value_upgrade + monIdSelect!.num_value_upgrade / 10
-    );
-
-    setInterval(() => (this.totalPoints += monUpgrade.num_value), 1000);
-  }
-
-  savegardeQuandUpgrade() {
-    this.playerService.updateScore(this.player).subscribe((response) => {
-      console.log('jesave', response);
-    });
-  }
-
+  // méthode pour le son au click
   sonTrain() {
     const sonTrainClic = document.getElementById(
       'audioElement'
@@ -276,6 +220,7 @@ export class JeuComponent {
     }
   }
 
+  // méthode d'activation != ? du son
   ActivationDuSon() {
     console.log('La valeur retour', this.maValeurDeProfilSon);
     if (this.maValeurDeProfilSon === undefined) {
@@ -285,30 +230,103 @@ export class JeuComponent {
     }
   }
 
-  animationImg() {
-    console.log('log anim value', this.maValeurDeProfilAnim);
+  // methode quand je click sur mes upgrade
+  gestionClic(monUpgrade: Upgrade) {
+    this.cdr.detectChanges();
+    this.playerService.getProfil().subscribe((x) => {
+      const mesAcquisitions = x.acquire;
+      this.player = x;
+      // recupérer lid, la valeur de l'amélioration
+      this.testDeId = mesAcquisitions.some(
+        (item) => item.id_upgrade === monUpgrade.id_upgrade
+      );
+      const monIdSelect = mesAcquisitions.find(
+        (x) => x.id_upgrade === monUpgrade.id_upgrade
+      );
 
-    if (
-      this.maValeurDeProfilAnim === undefined ||
-      this.maValeurDeProfilAnim === true
-    ) {
-      if (this.imageIndex === this.selectImg.length - 1) {
-        this.imageIndex = 0;
+      if (this.testDeId === false) {
+        // console.log('je rentre');
+
+        this.monAcquisition = {
+          id_players: this.player!.id_players,
+          id_upgrade: monUpgrade!.id_upgrade,
+          nom_name: monUpgrade.nom_name,
+          num_cost: monUpgrade.num_cost,
+          num_value: monUpgrade.num_value,
+          num_lvl: monUpgrade.num_lvl + 1,
+        };
+
+        this.acquireService
+          .createAcquire(this.monAcquisition)
+          .subscribe((response) => {
+            console.log(
+              'voila mon create acquire DE PUTIN DE FACON DINAMIQUE',
+
+              response
+            );
+          });
       } else {
-        this.imageIndex = this.imageIndex + 1;
+        // console.log(
+        //   'je dois maintenant faire la méthode pour incrémenté et rajouter le compteur lvl dans mon if et mon else'
+        // );
+        if (monIdSelect?.id_upgrade === monUpgrade.id_upgrade) {
+          // console.log(
+          //   "je suis content parce que j'ai passer la putin de journé pour ne plus avoir mes valeurs en dur à l'initialisation et donc je JOUIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEEEEEE DE BONHEURR"
+          // );
+
+          this.monAcquisition = {
+            id_players: this.player!.id_players,
+            id_upgrade: monUpgrade!.id_upgrade,
+            nom_name: monUpgrade.nom_name,
+            num_cost: monIdSelect.num_cost + monUpgrade.num_cost / 10,
+            num_value: monIdSelect.num_value + monUpgrade.num_value,
+            num_lvl: monIdSelect.num_lvl + 1,
+          };
+
+          this.acquireService
+            .updateAcquire(this.monAcquisition)
+            .subscribe((response) => {
+              console.log('voila mon update', response);
+            });
+          console.log('a', this.player.num_score);
+          console.log(monIdSelect.num_cost, monUpgrade.num_cost / 10);
+
+          this.MonEnvoieDeScore.num_score =
+            this.player.num_score - this.monAcquisition.num_cost;
+          this.playerService
+            .updateScore(this.MonEnvoieDeScore)
+            .subscribe((response) => {
+              console.log(response);
+              if (response) {
+                this.player.num_score =
+                  this.player.num_score - this.monAcquisition.num_cost;
+              }
+            });
+        }
       }
-      // sauvegarde local de l'image
-      localStorage.setItem('animation', `${this.imageIndex}`);
-      this.monTabIm();
-    } else this.imageIndex = 1;
+    });
   }
 
   animAutoByUpgrade() {
-    if (this.compteurImgAuto === 0) {
-      setInterval(() => {
-        this.animationImg();
-      }, 750);
-    }
-    this.compteurImgAuto += 1;
+    setInterval(() => {
+      this.animationImg();
+    }, 750);
+  }
+
+  monTabIm() {
+    this.tableau.forEach((element) => {
+      // Pour chaque élément dans "tableau"
+      const id = element.id;
+
+      const acquisition = this.player.acquire.find(
+        (x) => x.id_upgrade === id && x.num_lvl > 0
+      );
+
+      if (acquisition) {
+        this.selectImg = element.tableau;
+      }
+    });
+
+    console.log('je log', this.selectImg);
   }
 }

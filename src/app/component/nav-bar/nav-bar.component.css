@@ -11,17 +11,31 @@
   display: flex;
   align-items: center;
   height: 8vh;
-  background-color: black;
+  background-color: rgb(0, 0, 0);
+
+  width: 100vw;
+
+  border-bottom: rgb(154, 154, 154) solid 1px;
+  overflow-y: none;
 }
 
 /* retrait des décoration sur les liens + largeur des liens de 20% par rapport au block Navbar */
 a {
-  display: flex;
-  justify-content: center;
-  width: 100%;
+  text-align: center;
+  width: 33vw;
   text-decoration: none;
   color: white;
   font-size: medium;
-  font-weight: 900;
+  font-weight: 800;
   cursor: pointer;
+  transition: 0.3s;
+
+  overflow-y: none;
+}
+
+a:hover {
+  width: 32vw;
+  color: #f6ac00;
+  transform: scale(1.1);
+  overflow-y: none;
 }

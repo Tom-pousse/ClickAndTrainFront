@@ -7,6 +7,9 @@ import { LogPlayer } from '../component/models/logUser';
 import { ReponseConnexion } from '../component/models/reponseConnexion';
 import { Classement } from '../component/models/classement';
 import { Acquire } from '../component/models/acquire';
+import { Param } from '../component/models/param';
+import { Enable } from '../component/models/enable';
+import { PlayerScore } from '../component/models/playerScore';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +49,7 @@ export class PlayerService {
     });
   }
 
-  updateScore(player: Player): Observable<Player> {
+  updatePlayer(player: Player): Observable<Player> {
     const headers = this.setHeaders();
     // console.log('save', player.num_score);
     return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
@@ -64,6 +67,14 @@ export class PlayerService {
   getStat(): Observable<Player[]> {
     const headers = this.setHeaders();
     return this.http.get<Player[]>(`${this.baseApiUrl}/accueil`, {
+      headers,
+    });
+  }
+
+  updateScore(player: PlayerScore): Observable<Player> {
+    const headers = this.setHeaders();
+    // console.log('save', player.num_score);
+    return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
       headers,
     });
   }

@@ -1,6 +1,11 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { PlayerService } from 'src/app/service/player.service';
 import { Player } from '../models/player';
+import { Param } from '../models/param';
+import { ParamService } from 'src/app/service/param.service';
+import { Enable } from '../models/enable';
+import { forkJoin } from 'rxjs';
+import { NgModel } from '@angular/forms';
 
 @Component({
   selector: 'app-profil',
@@ -10,6 +15,11 @@ import { Player } from '../models/player';
 export class ProfilComponent {
   player!: Player;
   admin!: boolean;
+  param!: Param[];
+  monProfil!: Enable;
+  paramByClick!: Param;
+  isChecked1: boolean = true;
+  isChecked2: boolean = false;
 
   // je creer une transmition de mon enfant vers son parent
   @Output() valueModalProfil: EventEmitter<boolean> =
@@ -18,28 +28,30 @@ export class ProfilComponent {
 
   @Output() animSelectionne: EventEmitter<boolean> =
     new EventEmitter<boolean>();
-  constructor(private playerService: PlayerService) {}
+  constructor(
+    private playerService: PlayerService,
+    private paramService: ParamService
+  ) {}
 
   ngOnInit(): void {
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
       console.log(this.player);
     });
+    this.paramService.getParam().subscribe((x) => {
+      this.param = x;
+      console.log(this.param);
+    });
   }
-  son(isSonActive: boolean) {
-    console.log('choix : ', isSonActive);
-    this.sonSelectionne.emit(isSonActive);
-  }
+  choixUser(param: Param) {
+    console.log(param);
+    console.log();
 
-  anim(isAnimActive: boolean) {
-    // console.log('choix : ', isAnimActive);
-    this.animSelectionne.emit(isAnimActive);
+    this.sonSelectionne.emit();
   }
 
   // la methode qui va envoyer l'info false pour fermer la fenettre
   transmettreValeurProfil() {
-    // console.log('profil', this.valueModalProfil.emit(false));
-
     // j'envoie ça
     this.valueModalProfil.emit(false);
   }
@@ -47,4 +59,6 @@ export class ProfilComponent {
     localStorage.clear();
     location.reload();
   }
+
+  saveModifProfil(value: boolean) {}
 }
