@@ -260,7 +260,7 @@ export class JeuComponent {
           .createAcquire(this.monAcquisition)
           .subscribe((response) => {
             console.log(
-              'voila mon create acquire DE PUTIN DE FACON DINAMIQUE',
+              'voila mon create acquire DE PUTIN DE FACON DYNAMIQUE',
 
               response
             );
