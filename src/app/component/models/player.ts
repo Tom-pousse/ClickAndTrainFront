@@ -1,6 +1,5 @@
 import { Acquire } from './acquire';
 import { Enable } from './enable';
-import { Param } from './param';
 
 export interface Player {
   id_players: number;
@@ -15,5 +14,4 @@ export interface Player {
   // ajout de l'acces à acquire
   acquire: Acquire[];
   enable: Enable[];
-  param: Param[];
 }

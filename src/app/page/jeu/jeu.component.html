@@ -38,21 +38,19 @@
             *ngIf="isPair"
             class="pair{{ i }} baseUpgradePair"
           >
-            <div>
-              <audio *ngIf="maValeurDeProfilSon === true" id="audioElement">
-                <source
-                  src="../../../assets/son/SWSH_Whoosh 4 (ID 1796)_LS.mp3"
-                  type="audio/mpeg"
-                />
-                Votre navigateur ne supporte pas l'élément audio.
-              </audio>
-            </div>
-
-            {{ upgrade.nom_name }}, {{ upgrade.num_cost }}
+            {{ upgrade.num_cost }}
           </div>
         </ng-container>
       </div>
-
+      <div>
+        <audio *ngIf="maValeurDeProfilSon === true" id="audioElement">
+          <source
+            src="../../../assets/son/SWSH_Whoosh 4 (ID 1796)_LS.mp3"
+            type="audio/mpeg"
+          />
+          Votre navigateur ne supporte pas l'élément audio.
+        </audio>
+      </div>
       <img
         [src]="selectImg[imageIndex]"
         (click)="incrementalZone()"
@@ -68,7 +66,7 @@
             *ngIf="!isPair"
             class="impair{{ i }} baseUpgradeImpair"
           >
-            {{ upgrade.nom_name }}, {{ upgrade.num_cost }}
+            {{ upgrade.num_cost }}
           </div>
         </ng-container>
       </div>

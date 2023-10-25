@@ -2,14 +2,11 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { Player } from '../component/models/player';
-
 import { LogPlayer } from '../component/models/logUser';
 import { ReponseConnexion } from '../component/models/reponseConnexion';
-import { Classement } from '../component/models/classement';
 import { Acquire } from '../component/models/acquire';
-import { Param } from '../component/models/param';
-import { Enable } from '../component/models/enable';
 import { PlayerScore } from '../component/models/playerScore';
+import { SocketIoService } from './socket-io.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +14,10 @@ import { PlayerScore } from '../component/models/playerScore';
 export class PlayerService {
   private baseApiUrl = 'http://localhost:3000/api';
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private socketIoService: SocketIoService
+  ) {}
 
   setHeaders() {
     const jwtToken = localStorage.getItem('token');
@@ -49,9 +49,17 @@ export class PlayerService {
     });
   }
 
+  // updatePlayer(player: Player): Observable<Player> {
+  //   const headers = this.setHeaders();
+  //   // console.log('save', player.num_score);
+  //   return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
+  //     headers,
+  //   });
+  // }
+
   updatePlayer(player: Player): Observable<Player> {
+    // Mise à jour du joueur via HTTP
     const headers = this.setHeaders();
-    // console.log('save', player.num_score);
     return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
       headers,
     });

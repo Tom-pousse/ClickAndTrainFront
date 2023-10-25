@@ -2,8 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Acquire } from '../component/models/acquire';
 import { Observable } from 'rxjs';
-import { Param } from '../component/models/param';
-import { Player } from '../component/models/player';
 
 @Injectable({
   providedIn: 'root',
