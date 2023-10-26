@@ -5,11 +5,13 @@
       <tr class="tableau">
         <th>Pseudo</th>
         <th>Score</th>
+        <th>Gain par seconde</th>
         <th>Nombre de click</th>
       </tr>
       <tr class="tableau">
         <td>{{ player.nom_pseudo }}</td>
         <td>{{ player.num_score }}</td>
+        <td>{{ totalInc }}</td>
         <td>{{ player.num_click }}</td>
       </tr>
     </table>
@@ -29,7 +31,7 @@
             class="pair{{ i }} baseUpgradePair display"
           >
             <p>Prix :{{ upgrade.num_cost }}</p>
-            <p>Pts :{{ upgrade.num_value }}/sc</p>
+            <p class="reduct">+{{ upgrade.num_value }}/sc</p>
           </div>
         </ng-container>
       </div>
@@ -58,7 +60,7 @@
             class="impair{{ i }} baseUpgradeImpair display"
           >
             <p>Prix :{{ upgrade.num_cost }}</p>
-            <p>Pts :{{ upgrade.num_value }}/sc</p>
+            <p class="reduct">+{{ upgrade.num_value }}/sc</p>
           </div>
         </ng-container>
       </div>

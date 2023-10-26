@@ -246,3 +246,7 @@ td {
   display: flex;
   flex-direction: column;
 }
+.reduct {
+  font-style: italic;
+  font-size: x-small;
+}

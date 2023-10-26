@@ -258,8 +258,6 @@ export class JeuComponent implements OnInit {
 
   // methode quand je click sur mes upgrade
   gestionClic(monUpgrade: Upgrade) {
-    console.log('je click sur upgrade : ', monUpgrade);
-
     //
     const monIdSelect = this.player.acquire.find(
       (x) => x.id_upgrade === monUpgrade.id_upgrade
