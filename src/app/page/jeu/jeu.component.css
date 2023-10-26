@@ -241,3 +241,8 @@ td {
   z-index: 2;
   box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
 }
+
+.display {
+  display: flex;
+  flex-direction: column;
+}

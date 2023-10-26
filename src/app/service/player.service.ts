@@ -5,7 +5,6 @@ import { Player } from '../component/models/player';
 import { LogPlayer } from '../component/models/logUser';
 import { ReponseConnexion } from '../component/models/reponseConnexion';
 import { Acquire } from '../component/models/acquire';
-import { PlayerScore } from '../component/models/playerScore';
 import { SocketIoService } from './socket-io.service';
 
 @Injectable({
@@ -75,14 +74,6 @@ export class PlayerService {
   getStat(): Observable<Player[]> {
     const headers = this.setHeaders();
     return this.http.get<Player[]>(`${this.baseApiUrl}/accueil`, {
-      headers,
-    });
-  }
-
-  updateScore(player: PlayerScore): Observable<Player> {
-    const headers = this.setHeaders();
-    // console.log('save', player.num_score);
-    return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
       headers,
     });
   }

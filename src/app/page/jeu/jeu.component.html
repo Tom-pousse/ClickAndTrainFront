@@ -12,18 +12,8 @@
         <td>{{ player.num_score }}</td>
         <td>{{ player.num_click }}</td>
       </tr>
-      <!-- pour afficher le score uniquement -->
     </table>
-    <table *ngIf="!player">
-      <tr class="tableau">
-        <th>Score</th>
-        <th>Nombre de click</th>
-      </tr>
-      <tr class="tableau">
-        <td>{{ totalPoints }}</td>
-        <td>{{ clickCount }}</td>
-      </tr>
-    </table>
+
     <!-- ajout du compteur de click sur la page -->
 
     <!-- ajout de la méthode d'incrémentation par click -->
@@ -36,9 +26,10 @@
           <div
             (click)="gestionClic(upgrade)"
             *ngIf="isPair"
-            class="pair{{ i }} baseUpgradePair"
+            class="pair{{ i }} baseUpgradePair display"
           >
-            {{ upgrade.num_cost }}
+            <p>Prix :{{ upgrade.num_cost }}</p>
+            <p>Pts :{{ upgrade.num_value }}/sc</p>
           </div>
         </ng-container>
       </div>
@@ -64,9 +55,10 @@
           <div
             (click)="gestionClic(upgrade)"
             *ngIf="!isPair"
-            class="impair{{ i }} baseUpgradeImpair"
+            class="impair{{ i }} baseUpgradeImpair display"
           >
-            {{ upgrade.num_cost }}
+            <p>Prix :{{ upgrade.num_cost }}</p>
+            <p>Pts :{{ upgrade.num_value }}/sc</p>
           </div>
         </ng-container>
       </div>

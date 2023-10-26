@@ -10,7 +10,7 @@ export interface Player {
   num_score: number;
   // ajout du nombre de clik
   num_click: number;
-  boo_admin: boolean;
+
   // ajout de l'acces à acquire
   acquire: Acquire[];
   enable: Enable[];

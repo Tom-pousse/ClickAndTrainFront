@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Acquire } from 'src/app/component/models/acquire';
-import { AcquirePatch } from 'src/app/component/models/acquirePatch';
 import { Player } from 'src/app/component/models/player';
 
 import { Upgrade } from 'src/app/component/models/upgrade';
@@ -18,7 +17,7 @@ export class JeuComponent implements OnInit {
   @Input() maValeurDeProfilSon!: boolean;
   @Input() maValeurDeProfilAnim!: boolean;
 
-  // testDeId!: boolean;
+  intervalId!: any;
 
   acquire!: Acquire;
 
@@ -26,7 +25,8 @@ export class JeuComponent implements OnInit {
   clickCount: number = 0;
   // total des points du joueur
   totalPoints: number = 0;
-  // MonEnvoieDeScore!: PlayerScore;
+  // total de l'incrementation automatique
+  totalInc: number = 0;
 
   // compteur d'image initialisé à zéro
   imageIndex: number = 0;
@@ -134,6 +134,7 @@ export class JeuComponent implements OnInit {
 
   // je récupère mes upgrades ici
   upgrades!: Upgrade[];
+  // une copie pour avoir toujours la valeur de base à modifier
   copieUpgrade!: Upgrade[];
 
   constructor(
@@ -149,48 +150,46 @@ export class JeuComponent implements OnInit {
         this.player.acquire = playerData.acquire;
         // console.log("j'ai mis ç jour mon player", this.player, playerData);
       });
+    this.socketIoService
+      .ecouteDuJoueurAcquisitionDepuisServeur()
+      .subscribe((playerData: Player) => {
+        this.player.acquire = playerData.acquire;
+        // console.log("j'ai mis ç jour mon player", this.player, playerData);
+      });
   }
   ngOnInit(): void {
-    this.playerService.getProfil().subscribe((profil) => {
-      this.player = profil;
-      // console.log(this.player.acquire);
-    });
     this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
       this.copieUpgrade = [...mesUpgrades];
     });
     this.acquireService.getAcquire().subscribe((mesAcquires) => {
       this.playerAcquisition = mesAcquires;
     });
+    this.playerService.getProfil().subscribe((profil) => {
+      this.player = profil;
+      // console.log(this.player.acquire);
+      this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
+        this.upgrades = [...mesUpgrades];
 
-    this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
-      this.upgrades = [...mesUpgrades];
-      this.recupDuPrixAuDemarage();
+        this.recupDuPrixAuDemarage();
+        const upgrade = this.upgrades.find((x) => x.num_value);
+        this.incrementationParSetIntrval();
+      });
     });
-    // tentative pour récupérer les valeur on init en front
-    // if (this.upgrades && this.player) {
-    //   this.upgrades!.forEach((coresspondanceId) => {
-    //     // Rechercher l'élément correspondant dans le tableau Y
-    //     const tst = this.player!.acquire.find(
-    //       (x) => x.id_upgrade === coresspondanceId.id_upgrade
-    //     );
-
-    //     // Si un élément correspondant est trouvé, mettre à jour X.valeur
-    //     if (tst) {
-    //       coresspondanceId.num_cost = tst.num_value_upgrade;
-    //     }
-    //     // console.log( coresspondanceId)
-    //   });
-    // }
 
     this.ActivationDuSon();
     this.animationImg();
     this.monTabIm();
-    // this.savepts();
+    this.calculDuTotalIncAuto();
+
     localStorage.getItem('animation');
+    this.save();
   }
 
   // ------------ methode incrémental
   incrementalZone() {
+    console.log(typeof this.player.num_score);
+
+    typeof this.player.num_score;
     this.animationImg();
     this.player.num_score += 1;
     this.player.num_click += 1;
@@ -224,18 +223,37 @@ export class JeuComponent implements OnInit {
       // playbackRate permet d'accelerer la vitesse du son
       sonTrainClic.playbackRate = 2;
       sonTrainClic.play();
-      console.log('jenvoie mon son');
+      // console.log('jenvoie mon son');
     }
   }
 
   // méthode d'activation != ? du son
   ActivationDuSon() {
-    console.log('La valeur retour', this.maValeurDeProfilSon);
+    // console.log('La valeur retour', this.maValeurDeProfilSon);
     if (this.maValeurDeProfilSon === undefined) {
       this.maValeurDeProfilSon = true;
     } else {
-      console.log('non je reste la');
+      // console.log('non je reste la');
     }
+  }
+
+  // methode d'incrémentation via set interval amélioré
+  // ---------------- a finir mais l'idée de base est la
+  incrementationParSetIntrval() {
+    this.calculDuTotalIncAuto();
+    // Effacer l'intervalle précédent s'il existe
+    if (this.intervalId !== null || this.intervalId !== undefined) {
+      clearInterval(this.intervalId);
+      this.intervalId = setInterval(() => {
+        this.player.num_score =
+          Math.round((this.player.num_score + this.totalInc / 5) * 10) / 10;
+      }, 200);
+      return;
+    }
+    this.intervalId = setInterval(() => {
+      this.player.num_score =
+        Math.round((this.player.num_score + this.totalInc / 5) * 10) / 10;
+    }, 200);
   }
 
   // methode quand je click sur mes upgrade
@@ -247,10 +265,10 @@ export class JeuComponent implements OnInit {
       (x) => x.id_upgrade === monUpgrade.id_upgrade
     );
 
-    let prixDeBase = this.copieUpgrade.find(
+    let valeurUpgradeDeBase = this.copieUpgrade.find(
       (x) => x.id_upgrade === monUpgrade.id_upgrade
     );
-    console.log('prix de base', prixDeBase);
+
     // console.log(
     //   'monIdSelect',
     //   monIdSelect,
@@ -258,114 +276,63 @@ export class JeuComponent implements OnInit {
     //   monUpgrade.id_upgrade
     // );
 
-    if (monIdSelect && monIdSelect.id_upgrade === monUpgrade.id_upgrade) {
-      console.log('prix de base', prixDeBase);
-      // console.log('jai trouver un id');
+    if (
+      monIdSelect &&
+      monIdSelect.id_upgrade === monUpgrade.id_upgrade &&
+      this.player.num_score >= monUpgrade.num_cost
+    ) {
+      console.log('jai trouver un id');
       monIdSelect.num_lvl = monIdSelect.num_lvl + 1;
       // console.log('mon lvl mis a jour', monIdSelect, this.player);
-      console.log(
-        'aaaaa',
-        monUpgrade.num_cost,
-        prixDeBase!.num_cost,
-        monIdSelect.num_lvl
-      );
-      monUpgrade.num_cost =
-        prixDeBase!.num_cost +
-        (prixDeBase!.num_cost * monIdSelect.num_lvl) / 10;
-      this.socketIoService.envoieDePlayerAuServer(this.player);
 
+      monUpgrade.num_cost = Math.round(
+        valeurUpgradeDeBase!.num_cost +
+          (valeurUpgradeDeBase!.num_cost * (monIdSelect.num_lvl - 1)) / 10
+      );
+      monUpgrade.num_value = Math.round(
+        valeurUpgradeDeBase!.num_value * monIdSelect!.num_lvl
+      );
+      this.player.num_score = Math.round(
+        this.player.num_score - monUpgrade.num_cost
+      );
+      this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
+      this.incrementationParSetIntrval();
       return;
     }
-    if (monIdSelect === undefined && this.player) {
-      // console.log("je n'ai pas trouver id");
+    if (
+      monIdSelect === undefined &&
+      this.player &&
+      this.player.num_score >= monUpgrade.num_cost
+    ) {
+      console.log("je n'ai pas trouver id");
+
       this.acquire = {
         id_players: this.player.id_players,
         id_upgrade: monUpgrade.id_upgrade,
-        num_lvl: 1,
+        num_lvl: 2,
       };
+      this.player.acquire.push(this.acquire);
+      this.player.num_score = Math.round(
+        this.player.num_score - monUpgrade.num_cost
+      );
       // console.log(
       //   'je creer une acquisition du joueur dans acquire via update en pushant directement dans le player',
       //   this.acquire
       // );
-      this.player.acquire.push(this.acquire);
       // console.log('je push dans player', this.player);
-      this.socketIoService.envoieDePlayerAuServer(this.player);
-      monUpgrade.num_cost = prixDeBase!.num_cost + prixDeBase!.num_cost / 10;
-      this.socketIoService.envoieDePlayerAuServer(this.player);
 
+      monUpgrade.num_cost = Math.round(
+        valeurUpgradeDeBase!.num_cost + valeurUpgradeDeBase!.num_cost / 10
+      );
+      monUpgrade.num_value = Math.round(
+        monUpgrade.num_value * this.acquire.num_lvl
+      );
+
+      this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
+      this.incrementationParSetIntrval();
       return;
     }
   }
-
-  //
-
-  // this.playerService.getProfil().subscribe((x) => {
-  //   const mesAcquisitions = x.acquire;
-  //   this.player = x;
-  //   // recupérer lid, la valeur de l'amélioration
-  //   this.testDeId = mesAcquisitions.some(
-  //     (item) => item.id_upgrade === monUpgrade.id_upgrade
-  //   );
-  //   // const monIdSelect = mesAcquisitions.find(
-  //   //   (x) => x.id_upgrade === monUpgrade.id_upgrade
-  //   // );
-  //   //
-  //   if (this.testDeId === false) {
-  //     // console.log('je rentre');
-
-  //     this.monAcquisition = {
-  //       id_players: this.player!.id_players,
-  //       id_upgrade: monUpgrade!.id_upgrade,
-  //       num_lvl: monUpgrade.num_lvl + 1,
-  //     };
-
-  //     this.acquireService
-  //       .createAcquire(this.monAcquisition)
-  //       .subscribe((response) => {
-  //         console.log(
-  //           'voila mon create acquire DE PUTIN DE FACON DYNAMIQUE',
-
-  //           response
-  //         );
-  //       });
-  //   } else {
-  //     // console.log(
-  //     //   'je dois maintenant faire la méthode pour incrémenté et rajouter le compteur lvl dans mon if et mon else'
-  //     // );
-  //     if (monIdSelect?.id_upgrade === monUpgrade.id_upgrade) {
-  //       // console.log(
-  //       //   "je suis content parce que j'ai passer la putin de journé pour ne plus avoir mes valeurs en dur à l'initialisation et donc je JOUIIIIIIIIIIIEEEEEEEEEEEEEEEEEEEEEEEEEEEEE DE BONHEURR"
-  //       // );
-
-  //       this.monAcquisition = {
-  //         id_players: this.player!.id_players,
-  //         id_upgrade: monUpgrade!.id_upgrade,
-  //         // nom_name: monUpgrade.nom_name,
-  //         // num_cost: monIdSelect.num_cost + monUpgrade.num_cost / 10,
-  //         // num_value: monIdSelect.num_value + monUpgrade.num_value,
-  //         num_lvl: monIdSelect.num_lvl + 1,
-  //       };
-
-  //       this.acquireService
-  //         .updateAcquire(this.monAcquisition)
-  //         .subscribe((response) => {
-  //           console.log('voila mon update', response);
-  //         });
-  //       // console.log('a', this.player.num_score);
-
-  //       // ...
-  //       this.MonEnvoieDeScore.num_score =
-  //         this.player.num_score -
-  //         monUpgrade.num_cost * this.monAcquisition.num_lvl;
-
-  //       this.playerService
-  //         .updateScore(this.MonEnvoieDeScore)
-  //         .subscribe((response) => {
-  //           console.log(response);
-  //         });
-  //     }
-  //   }
-  // });
 
   animAutoByUpgrade() {
     setInterval(() => {
@@ -389,22 +356,6 @@ export class JeuComponent implements OnInit {
     // console.log('je log', this.selectImg);
   }
 
-  // gestionClic(monUpgrade: Upgrade) {
-
-  // this.playerService.updatePlayer(this.player).subscribe(
-  //   (updatedPlayer) => {
-  //     // La mise à jour a réussi
-  //     this.player = updatedPlayer;
-  //     // Vous pouvez également effectuer d'autres actions ici si nécessaire
-  //     this.socketIoService.updatePlayer(updatedPlayer);
-  //   },
-  //   (error) => {
-  //     // La mise à jour a échoué, gérez l'erreur
-  //   }
-  // );
-
-  // }
-
   recupDuPrixAuDemarage() {
     if (this.upgrades && this.player.acquire) {
       this.upgrades.forEach((upgrade) => {
@@ -413,16 +364,38 @@ export class JeuComponent implements OnInit {
         );
 
         if (comparaison) {
-          console.log(
-            comparaison.num_lvl,
-            upgrade.num_cost / 10,
-            upgrade.num_cost
-          );
           upgrade.num_cost =
             upgrade.num_cost + (upgrade.num_cost / 10) * comparaison.num_lvl;
           upgrade.num_value = upgrade.num_value * comparaison.num_lvl;
+          return;
         }
       });
     }
+  }
+
+  // je calcul le total des amélioration du joueur pour les lancer dans set interval et au démarage
+  calculDuTotalIncAuto(): void {
+    this.totalInc = 0;
+    if (this.player) {
+      for (const AcquisitionDuJoueur of this.player.acquire) {
+        let testId = this.upgrades.find(
+          (x) => x.id_upgrade === AcquisitionDuJoueur.id_upgrade
+        );
+        // console.log('si jai ça', testId?.id_upgrade);
+        if (testId) {
+          testId.num_value;
+          // console.log(testId.num_value, testId);
+
+          this.totalInc += testId.num_value;
+          // console.log('aaa', this.totalInc);
+        }
+      }
+    }
+  }
+  save() {
+    setInterval(() => {
+      console.log('saveTime');
+      this.socketIoService.envoieDePlayerAuServer(this.player);
+    }, 1000);
   }
 }

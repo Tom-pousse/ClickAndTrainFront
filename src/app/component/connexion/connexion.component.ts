@@ -18,7 +18,6 @@ export class ConnexionComponent {
     // nom_password_confirme: new FormControl(''),
     num_score: new FormControl(0),
     num_click: new FormControl(0),
-    boo_admin: new FormControl(false),
   });
   connexion: FormGroup = new FormGroup({
     nom_pseudo: new FormControl(''),
