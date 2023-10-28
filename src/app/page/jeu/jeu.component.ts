@@ -18,6 +18,7 @@ export class JeuComponent implements OnInit {
   @Input() maValeurDeProfilAnim!: boolean;
 
   intervalId!: any;
+  intervalIdPourAnimation: any = false;
 
   acquire!: Acquire;
 
@@ -131,6 +132,7 @@ export class JeuComponent implements OnInit {
       ],
     },
   ];
+  animationActver: boolean = true;
 
   // je récupère mes upgrades ici
   upgrades!: Upgrade[];
@@ -160,27 +162,27 @@ export class JeuComponent implements OnInit {
   ngOnInit(): void {
     this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
       this.copieUpgrade = [...mesUpgrades];
-    });
-    this.acquireService.getAcquire().subscribe((mesAcquires) => {
-      this.playerAcquisition = mesAcquires;
-    });
-    this.playerService.getProfil().subscribe((profil) => {
-      this.player = profil;
-      // console.log(this.player.acquire);
-      this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
-        this.upgrades = [...mesUpgrades];
+      this.playerService.getProfil().subscribe((profil) => {
+        this.player = profil;
+        this.acquireService.getAcquire().subscribe((mesAcquires) => {
+          this.playerAcquisition = mesAcquires;
+          // console.log(this.player.acquire);
+          this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
+            this.upgrades = [...mesUpgrades];
 
-        this.recupDuPrixAuDemarage();
-        const upgrade = this.upgrades.find((x) => x.num_value);
-        this.incrementationParSetIntrval();
+            this.recupDuPrixAuDemarage();
+            const upgrade = this.upgrades.find((x) => x.num_value);
+            this.incrementationParSetIntrval();
+            this.animAutoByUpgrade();
+            this.monTabIm();
+            this.animationImg();
+            // this.activationDuSon();
+          });
+        });
       });
     });
 
-    this.ActivationDuSon();
-    this.animationImg();
-    this.monTabIm();
     this.calculDuTotalIncAuto();
-
     localStorage.getItem('animation');
     this.save();
   }
@@ -194,6 +196,7 @@ export class JeuComponent implements OnInit {
     this.player.num_score += 1;
     this.player.num_click += 1;
     this.sonTrain();
+    // this.activationDuSon;
     // j'envoie mon joueur pour save
     this.socketIoService.envoieDePlayerAuServer(this.player);
   }
@@ -228,14 +231,16 @@ export class JeuComponent implements OnInit {
   }
 
   // méthode d'activation != ? du son
-  ActivationDuSon() {
-    // console.log('La valeur retour', this.maValeurDeProfilSon);
-    if (this.maValeurDeProfilSon === undefined) {
-      this.maValeurDeProfilSon = true;
-    } else {
-      // console.log('non je reste la');
-    }
-  }
+  // activationDuSon() {
+  //   console.log('pouet');
+
+  //   console.log('La valeur jeu', this.maValeurDeProfilSon);
+  //   if (this.maValeurDeProfilSon || undefined) {
+  //     this.sonTrain();
+  //     return;
+  //   }
+  //   return;
+  // }
 
   // methode d'incrémentation via set interval amélioré
   // ---------------- a finir mais l'idée de base est la
@@ -295,6 +300,7 @@ export class JeuComponent implements OnInit {
       );
       this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
       this.incrementationParSetIntrval();
+
       return;
     }
     if (
@@ -333,24 +339,31 @@ export class JeuComponent implements OnInit {
   }
 
   animAutoByUpgrade() {
-    setInterval(() => {
-      this.animationImg();
-    }, 750);
+    const jeTestsiAcquire = this.player.acquire.find((x) => x.id_upgrade);
+    if (this.animationActver === true && jeTestsiAcquire !== undefined) {
+      clearInterval(this.intervalIdPourAnimation);
+      this.intervalIdPourAnimation = setInterval(() => {
+        this.animationImg();
+      }, 750);
+    }
+    if (this.animationActver === false && jeTestsiAcquire === undefined) {
+      clearInterval(this.intervalIdPourAnimation);
+    }
   }
 
   monTabIm() {
-    // this.tableau.forEach((element) => {
-    //   // Pour chaque élément dans "tableau"
-    //   const id = element.id;
-    //   if (this.player.acquire) {
-    //     const acquisition = this.player.acquire.find(
-    //       (x) => x.id_upgrade === id && x.num_lvl > 0
-    //     );
-    //     if (acquisition) {
-    //       this.selectImg = element.tableau;
-    //     }
-    //   }
-    // });
+    this.tableau.forEach((element) => {
+      // Pour chaque élément dans "tableau"
+      const id = element.id;
+      if (this.player.acquire) {
+        const acquisition = this.player.acquire.find(
+          (x) => x.id_upgrade === id && x.num_lvl > 0
+        );
+        if (acquisition) {
+          this.selectImg = element.tableau;
+        }
+      }
+    });
     // console.log('je log', this.selectImg);
   }
 
@@ -392,7 +405,7 @@ export class JeuComponent implements OnInit {
   }
   save() {
     setInterval(() => {
-      console.log('saveTime');
+      // console.log('saveTime');
       this.socketIoService.envoieDePlayerAuServer(this.player);
     }, 1000);
   }

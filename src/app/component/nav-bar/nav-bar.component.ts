@@ -29,7 +29,7 @@ export class NavBarComponent {
 
   // je récupere la valeur false envoyer depuis le composant profil pour fermer la fenetre
   retourDeProfil(valueProfil: boolean) {
-    console.log('La valeur retour', valueProfil);
+    // console.log('La valeur retour', valueProfil);
     this.hideProfilModal = valueProfil;
   }
 
@@ -40,7 +40,7 @@ export class NavBarComponent {
   }
   // je recupère l'info de login quand la modal ce ferme et la copie dans ma variable hide pour remettre à false
   retourDeLogin(valueLog: boolean) {
-    console.log('La valeur retour', valueLog);
+    // console.log('La valeur retour', valueLog);
     this.hideLogModal = valueLog;
   }
   openModalClassement() {
@@ -49,7 +49,7 @@ export class NavBarComponent {
 
   // je recupère l'info de classement quand la modal ce ferme et la copie dans ma variable hide pour remettre à false
   retourDeClassement(valueLog: boolean) {
-    console.log('La valeur retour', valueLog);
+    console.log(valueLog);
     this.hideClassementModal = valueLog;
   }
 
@@ -57,6 +57,7 @@ export class NavBarComponent {
   infoPourJeuDuSon(valueLog: boolean) {
     // console.log('La valeur retour', valueLog);
     this.valeurPourJeuDuSon = valueLog;
+    console.log('valeur de son dans nav bar', this.valeurPourJeuDuSon);
   }
 
   infoPourJeuDeAnim(valueLog: boolean) {

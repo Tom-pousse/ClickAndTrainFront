@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnChanges,
+  Output,
+} from '@angular/core';
 import { PlayerService } from 'src/app/service/player.service';
 import { Player } from '../models/player';
 import { Param } from '../models/param';
@@ -18,12 +24,11 @@ export class ProfilComponent {
   param!: Param[];
   monProfil!: Enable;
   paramByClick!: Param;
-  isChecked1: boolean = true;
-  isChecked2: boolean = false;
 
   // je creer une transmition de mon enfant vers son parent
   @Output() valueModalProfil: EventEmitter<boolean> =
     new EventEmitter<boolean>();
+  leSonSelectionne: boolean = true;
   @Output() sonSelectionne: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   @Output() animSelectionne: EventEmitter<boolean> =
@@ -36,19 +41,46 @@ export class ProfilComponent {
   ngOnInit(): void {
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
-      console.log(this.player);
+      // console.log(this.player);
     });
     this.paramService.getParam().subscribe((x) => {
       this.param = x;
-      console.log(this.param);
+      // console.log(this.param);
     });
   }
-  choixUser(param: Param) {
-    console.log(param);
-    console.log();
 
-    this.sonSelectionne.emit();
-  }
+  // création d'un tableau de méthode (pour chaque itération de param une méthode qui corespond)
+  choixUser = [
+    {
+      methode: (event: Event, param: Param) => {
+        console.log('methode 1', event, param);
+
+        console.log(event.target);
+        const change = event.target as HTMLInputElement;
+        change.value;
+        console.log(change.value);
+        if (change.value === 'true' || undefined) {
+          this.animSelectionne.emit(true);
+          return;
+        }
+        this.animSelectionne.emit(false);
+      },
+    },
+    {
+      methode: (event: Event, param: Param) => {
+        console.log('methode 2', event, param);
+        console.log(event.target);
+        const change = event.target as HTMLInputElement;
+        change.value;
+        console.log(change.value);
+        if (change.value === 'true' || undefined) {
+          this.sonSelectionne.emit(true);
+          return;
+        }
+        this.sonSelectionne.emit(false);
+      },
+    },
+  ];
 
   // la methode qui va envoyer l'info false pour fermer la fenettre
   transmettreValeurProfil() {

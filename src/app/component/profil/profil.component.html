@@ -26,12 +26,24 @@
         </tr> -->
       </table>
     </div>
-    <div *ngFor="let unParam of param">
-      <!-- <div>{{ unParam.nom_label }}</div> -->
+    <div *ngFor="let unParam of param; let i = index">
+      <!-- avec i je dois creer un tableau de méthode -->
       <div *ngIf="unParam">
-        <label for=""></label>
-        <input type="radio" id="" />
-        <input type="radio" id="" />
+        <label for="{{ unParam.nom_label }}">{{ unParam.nom_label }}</label>
+        <input
+          (change)="choixUser[i].methode($event, unParam)"
+          type="radio"
+          id="{{ unParam.nom_label }}"
+          name="{{ unParam.nom_label }}"
+          [value]="true"
+        />
+        <input
+          (change)="choixUser[i].methode($event, unParam)"
+          type="radio"
+          id="{{ unParam.nom_label }}"
+          name="{{ unParam.nom_label }}"
+          [value]="false"
+        />
       </div>
     </div>
 
