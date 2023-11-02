@@ -12,6 +12,7 @@ import { SocketIoService } from './socket-io.service';
 })
 export class PlayerService {
   private baseApiUrl = 'http://localhost:3000/api';
+  // player!: PLayer
 
   constructor(
     private http: HttpClient,

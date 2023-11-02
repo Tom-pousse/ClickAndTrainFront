@@ -132,7 +132,6 @@ export class JeuComponent implements OnInit {
       ],
     },
   ];
-  animationActver: boolean = true;
 
   // je récupère mes upgrades ici
   upgrades!: Upgrade[];
@@ -150,41 +149,45 @@ export class JeuComponent implements OnInit {
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
         this.player.acquire = playerData.acquire;
-        // console.log("j'ai mis ç jour mon player", this.player, playerData);
+        console.log("j'ai mis à jour mon player", this.player, playerData);
+        this.player = playerData;
       });
-    this.socketIoService
-      .ecouteDuJoueurAcquisitionDepuisServeur()
-      .subscribe((playerData: Player) => {
-        this.player.acquire = playerData.acquire;
-        // console.log("j'ai mis ç jour mon player", this.player, playerData);
-      });
+    // this.socketIoService
+    //   .ecouteDuJoueurAcquisitionDepuisServeur()
+    //   .subscribe((playerData: Player) => {
+    //     this.player.acquire = playerData.acquire;
+    //     console.log("j'ai mis ç jour mon player", this.player, playerData);
+    //   });
   }
   ngOnInit(): void {
     this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
       this.copieUpgrade = [...mesUpgrades];
-      this.playerService.getProfil().subscribe((profil) => {
-        this.player = profil;
-        this.acquireService.getAcquire().subscribe((mesAcquires) => {
-          this.playerAcquisition = mesAcquires;
-          // console.log(this.player.acquire);
-          this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
-            this.upgrades = [...mesUpgrades];
+    });
+    this.playerService.getProfil().subscribe((profil) => {
+      this.player = profil;
+      this.acquireService.getAcquire().subscribe((mesAcquires) => {
+        this.playerAcquisition = mesAcquires;
+        // console.log(this.player.acquire);
+      });
 
-            this.recupDuPrixAuDemarage();
-            const upgrade = this.upgrades.find((x) => x.num_value);
-            this.incrementationParSetIntrval();
-            this.animAutoByUpgrade();
-            this.monTabIm();
-            this.animationImg();
-            // this.activationDuSon();
-          });
-        });
+      this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
+        this.upgrades = [...mesUpgrades];
+
+        this.recupDuPrixAuDemarage();
+        const upgrade = this.upgrades.find((x) => x.num_value);
+        this.incrementationParSetIntrval();
+
+        this.monTabIm();
+        this.animationImg();
+        this.activationDuSon();
+        this.animAutoByUpgrade();
       });
     });
 
     this.calculDuTotalIncAuto();
     localStorage.getItem('animation');
-    this.save();
+
+    console.log('ici', this.player);
   }
 
   // ------------ methode incrémental
@@ -198,13 +201,11 @@ export class JeuComponent implements OnInit {
     this.sonTrain();
     // this.activationDuSon;
     // j'envoie mon joueur pour save
+    console.log(this.player);
+
     this.socketIoService.envoieDePlayerAuServer(this.player);
   }
   animationImg() {
-    // voir pour mettre cette condition si désactiver l'animation
-    // if (this.maValeurDeProfilAnim === true || undefined) {
-    // } else this.imageIndex = 1;
-
     if (this.imageIndex === this.selectImg.length - 1) {
       this.imageIndex = 0;
     } else {
@@ -214,6 +215,11 @@ export class JeuComponent implements OnInit {
     localStorage.setItem('animation', `${this.imageIndex}`);
     this.monTabIm();
   }
+
+  // voir pour mettre cette condition si désactiver l'animation
+  // if (this.maValeurDeProfilAnim === true || undefined) {
+  // } else this.imageIndex = 1;
+  // et ne pas oublier le clearInterval(this.intervalIdPourAnimation);
 
   //-------------- méthode pour le son au click
   sonTrain() {
@@ -231,16 +237,15 @@ export class JeuComponent implements OnInit {
   }
 
   // méthode d'activation != ? du son
-  // activationDuSon() {
-  //   console.log('pouet');
+  activationDuSon() {
+    console.log('pouet');
 
-  //   console.log('La valeur jeu', this.maValeurDeProfilSon);
-  //   if (this.maValeurDeProfilSon || undefined) {
-  //     this.sonTrain();
-  //     return;
-  //   }
-  //   return;
-  // }
+    console.log('La valeur jeu', this.maValeurDeProfilSon);
+    if (this.maValeurDeProfilSon === undefined) {
+      this.maValeurDeProfilSon = true;
+      return;
+    }
+  }
 
   // methode d'incrémentation via set interval amélioré
   // ---------------- a finir mais l'idée de base est la
@@ -298,7 +303,8 @@ export class JeuComponent implements OnInit {
       this.player.num_score = Math.round(
         this.player.num_score - monUpgrade.num_cost
       );
-      this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
+      //  this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
+      this.socketIoService.envoieDePlayerAuServer(this.player);
       this.incrementationParSetIntrval();
 
       return;
@@ -331,8 +337,8 @@ export class JeuComponent implements OnInit {
       monUpgrade.num_value = Math.round(
         monUpgrade.num_value * this.acquire.num_lvl
       );
-
-      this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
+      //  this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
+      this.socketIoService.envoieDePlayerAuServer(this.player);
       this.incrementationParSetIntrval();
       return;
     }
@@ -340,15 +346,20 @@ export class JeuComponent implements OnInit {
 
   animAutoByUpgrade() {
     const jeTestsiAcquire = this.player.acquire.find((x) => x.id_upgrade);
-    if (this.animationActver === true && jeTestsiAcquire !== undefined) {
+    if (
+      this.maValeurDeProfilAnim === true ||
+      (this.maValeurDeProfilAnim === undefined && jeTestsiAcquire !== undefined)
+    ) {
       clearInterval(this.intervalIdPourAnimation);
+      console.log('test anim on', this.maValeurDeProfilAnim);
+
       this.intervalIdPourAnimation = setInterval(() => {
         this.animationImg();
       }, 750);
+      return;
     }
-    if (this.animationActver === false && jeTestsiAcquire === undefined) {
-      clearInterval(this.intervalIdPourAnimation);
-    }
+
+    clearInterval(this.intervalIdPourAnimation);
   }
 
   monTabIm() {

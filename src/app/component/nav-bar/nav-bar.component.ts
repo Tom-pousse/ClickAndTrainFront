@@ -61,7 +61,7 @@ export class NavBarComponent {
   }
 
   infoPourJeuDeAnim(valueLog: boolean) {
-    // console.log('La valeur retour', valueLog);
+    console.log('La valeur retour de animation dans nav bar', valueLog);
     this.valeurPourJeuDeAnim = valueLog;
   }
 }

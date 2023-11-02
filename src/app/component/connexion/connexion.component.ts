@@ -69,6 +69,7 @@ export class ConnexionComponent {
         localStorage.setItem('token', response.accessToken);
         this.router.navigate(['jeu']);
         this.transmettreValeur();
+        location.reload();
       },
       error: (error) => {
         alert('quelque chose c est mal passé');
