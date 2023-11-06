@@ -42,7 +42,7 @@ export class ProfilComponent {
     this.socketService
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
-        this.player.acquire = playerData.acquire;
+        this.player = playerData;
         console.log("j'ai mis ç jour mon player", this.player, playerData);
       });
   }
@@ -54,13 +54,6 @@ export class ProfilComponent {
 
     this.playerService.getProfil().subscribe((profil) => {
       this.player = profil;
-      // console.log(this.player);
-      // console.log(
-      //   'dans on init player service',
-      //   // this.player.enable,
-      //   this.player
-      // );
-      this.initProfil();
     });
   }
 
@@ -68,31 +61,67 @@ export class ProfilComponent {
   choixUser = [
     {
       methode: (event: Event, param: Param) => {
-        console.log('methode 1', event, param);
+        this.initProfil();
+        console.log('methode 1', param);
 
-        console.log(event.target);
+        console.log('jai cliqué', event.target);
         const change = event.target as HTMLInputElement;
         change.value;
-        console.log(change.value);
-        if (change.value === 'true' || undefined) {
-          this.animSelectionne.emit(true);
-          return;
+        console.log('valeur de mon click', change.value);
+        const idEnable = this.player.enable.find(
+          (x) => x.id_param === param.id_param
+        );
+        if (param.id_param === idEnable?.id_param) {
+          console.log('id de enable est egal à :', idEnable.id_param);
+
+          if (change.value === 'true') {
+            idEnable.boo_status = true;
+            console.log('je save mon joueur', this.player);
+            this.socketService.envoieDePlayerAuServer(this.player);
+            this.animSelectionne.emit(idEnable.boo_status);
+            return;
+          }
+          if (change.value === 'false') {
+            idEnable.boo_status = false;
+            console.log('je save mon joueur', this.player);
+            this.socketService.envoieDePlayerAuServer(this.player);
+            this.animSelectionne.emit(idEnable.boo_status);
+            return;
+          }
         }
-        this.animSelectionne.emit(false);
       },
     },
     {
       methode: (event: Event, param: Param) => {
-        console.log('methode 2', event, param);
-        console.log(event.target, event);
+        this.initProfil();
+        console.log('methode 2', param);
+        // console.log(event.target, event);
         const change = event.target as HTMLInputElement;
         change.value;
-        console.log(change.value);
-        if (change.value === 'true' || undefined) {
-          this.sonSelectionne.emit(true);
-          return;
+        // console.log(change.value);
+        const idEnable2 = this.player.enable.find(
+          (x) => x.id_param === param.id_param
+        );
+        console.log(idEnable2);
+
+        if (param.id_param === idEnable2?.id_param) {
+          console.log('id de enable est egal à :', idEnable2!.id_param);
+
+          if (change.value === 'true' || undefined) {
+            idEnable2.boo_status = true;
+            console.log('je save mon joueur', this.player);
+            this.socketService.envoieDePlayerAuServer(this.player);
+            this.sonSelectionne.emit(idEnable2.boo_status);
+            return;
+          }
+          if (change.value === 'false') {
+            idEnable2.boo_status = false;
+            console.log('je save mon joueur', this.player);
+            this.socketService.envoieDePlayerAuServer(this.player);
+            this.sonSelectionne.emit(idEnable2.boo_status);
+            return;
+          }
         }
-        this.sonSelectionne.emit(false);
       },
     },
   ];
@@ -107,62 +136,42 @@ export class ProfilComponent {
     location.reload();
   }
 
-  saveModifProfil(value: boolean) {}
-
   initProfil() {
     console.log('1');
-
     if (this.player.enable.length === 0) {
       console.log(
-        '2 je vérifie si mon taleau est vide',
+        '2, Attention je sius rentré je vérifie si mon taleau est vide',
         this.player.enable.length
       );
-
       this.param.forEach((element) => {
         const testid = this.player.enable.find((x) => {
           x.id_param;
         });
-        console.log('pouets', element);
-        console.log(testid);
-
-        console.log('3, je rentre dans mon foreach log param', this.param);
-
+        // console.log('pouets', element);
+        // console.log(testid);
+        // console.log('3, je rentre dans mon foreach log param', this.param);
         if (testid === undefined || testid.id_param !== element.id_param) {
-          console.log(
-            '4, si jai pas d élément qui corespond à idparam',
-            testid?.id_param !== element.id_param
-          );
-          console.log('log de enable avant le remplissage', this.enable);
-
+          // console.log(
+          //   '4, si jai pas d élément qui corespond à idparam',
+          //   testid?.id_param !== element.id_param
+          // );
+          // console.log('log de enable avant le remplissage', this.enable);
           this.enable = {
             id_players: this.player.id_players,
             id_param: element.id_param,
             boo_status: element.boo_status,
           };
           if (this.enable) {
-            console.log('log de enable apres le remplissage', this.enable);
-            console.log('log de player apres le remplissage', this.player);
+            // console.log('log de enable apres le remplissage', this.enable);
+            // console.log('log de player apres le remplissage', this.player);
             this.player.enable.push(this.enable);
-            console.log('5', this.enable);
-            console.log('5 enable push dans player', this.player.enable);
+            // console.log('5', this.enable);
+            // console.log('5 enable push dans player', this.player.enable);
           }
         }
       });
-
-      // subscribe({
-      //   next: (response) => {
-      //     response;
-      //     console.log('save', response);
-      //   },
-      //   error: (error) => {
-      //     error;
-      //     console.log('pas bon', error);
-      //     return;
-      //   },
-      // });
-
-      console.log('je save mon joueur', this.player);
-      this.socketService.envoieDePlayerAuServer(this.player);
+      // console.log('je save mon joueur', this.player);
+      // this.socketService.envoieDePlayerAuServer(this.player);
     }
   }
 }

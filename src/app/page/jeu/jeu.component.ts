@@ -7,6 +7,8 @@ import { AcquireService } from 'src/app/service/acquire.service';
 import { PlayerService } from 'src/app/service/player.service';
 import { UpgradeService } from 'src/app/service/upgrade.service';
 import { SocketIoService } from 'src/app/service/socket-io.service';
+import { Param } from 'src/app/component/models/param';
+import { ParamService } from 'src/app/service/param.service';
 
 @Component({
   selector: 'app-jeu',
@@ -138,11 +140,14 @@ export class JeuComponent implements OnInit {
   // une copie pour avoir toujours la valeur de base à modifier
   copieUpgrade!: Upgrade[];
 
+  params!: Param[];
+
   constructor(
     private playerService: PlayerService,
     private upgradeService: UpgradeService,
     private acquireService: AcquireService,
-    private socketIoService: SocketIoService
+    private socketIoService: SocketIoService,
+    private paramService: ParamService
   ) {
     // je recoie mes info du joueur à jour
     this.socketIoService
@@ -151,15 +156,14 @@ export class JeuComponent implements OnInit {
         this.player.acquire = playerData.acquire;
         console.log("j'ai mis à jour mon player", this.player, playerData);
         this.player = playerData;
+        this.activationDuSon();
+        this.animAutoByUpgrade();
       });
-    // this.socketIoService
-    //   .ecouteDuJoueurAcquisitionDepuisServeur()
-    //   .subscribe((playerData: Player) => {
-    //     this.player.acquire = playerData.acquire;
-    //     console.log("j'ai mis ç jour mon player", this.player, playerData);
-    //   });
   }
   ngOnInit(): void {
+    this.paramService.getParam().subscribe((mesParam) => {
+      this.params = mesParam;
+    });
     this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
       this.copieUpgrade = [...mesUpgrades];
     });
@@ -199,20 +203,22 @@ export class JeuComponent implements OnInit {
     this.player.num_score += 1;
     this.player.num_click += 1;
     this.sonTrain();
-    // this.activationDuSon;
-    // j'envoie mon joueur pour save
+
     console.log(this.player);
 
     this.socketIoService.envoieDePlayerAuServer(this.player);
   }
   animationImg() {
+    if (this.maValeurDeProfilAnim === false) {
+      this.imageIndex = 1;
+      return;
+    }
     if (this.imageIndex === this.selectImg.length - 1) {
       this.imageIndex = 0;
     } else {
       this.imageIndex = this.imageIndex + 1;
     }
-    // sauvegarde local de l'image
-    localStorage.setItem('animation', `${this.imageIndex}`);
+
     this.monTabIm();
   }
 
@@ -238,9 +244,18 @@ export class JeuComponent implements OnInit {
 
   // méthode d'activation != ? du son
   activationDuSon() {
-    console.log('pouet');
+    const monParam = this.params.find((x) => x.nom_label === 'son');
+    console.log(this.params.find((x) => x.nom_label === 'son'));
+    const monIdParam = this.player.enable.find(
+      (x) => x.id_param === monParam?.id_param
+    );
+    console.log('test', monIdParam);
 
-    console.log('La valeur jeu', this.maValeurDeProfilSon);
+    // this.player.enable.find();
+    if (monIdParam) {
+      this.maValeurDeProfilSon! = monIdParam.boo_status;
+      return;
+    }
     if (this.maValeurDeProfilSon === undefined) {
       this.maValeurDeProfilSon = true;
       return;
@@ -276,13 +291,6 @@ export class JeuComponent implements OnInit {
     let valeurUpgradeDeBase = this.copieUpgrade.find(
       (x) => x.id_upgrade === monUpgrade.id_upgrade
     );
-
-    // console.log(
-    //   'monIdSelect',
-    //   monIdSelect,
-    //   'mon upgrade',
-    //   monUpgrade.id_upgrade
-    // );
 
     if (
       monIdSelect &&
@@ -345,7 +353,23 @@ export class JeuComponent implements OnInit {
   }
 
   animAutoByUpgrade() {
+    const monAnimationParam = this.params.find(
+      (x) => x.nom_label === 'animation'
+    );
+    const monAnim = this.player.enable.find(
+      (x) => x.id_param === monAnimationParam?.id_param
+    );
+    console.log('test mon anim', monAnim);
+    if (monAnim) {
+      this.maValeurDeProfilAnim = monAnim!.boo_status;
+    }
+
     const jeTestsiAcquire = this.player.acquire.find((x) => x.id_upgrade);
+
+    if (this.maValeurDeProfilAnim === false) {
+      clearInterval(this.intervalIdPourAnimation);
+      this.animationImg();
+    }
     if (
       this.maValeurDeProfilAnim === true ||
       (this.maValeurDeProfilAnim === undefined && jeTestsiAcquire !== undefined)
@@ -358,8 +382,6 @@ export class JeuComponent implements OnInit {
       }, 750);
       return;
     }
-
-    clearInterval(this.intervalIdPourAnimation);
   }
 
   monTabIm() {
