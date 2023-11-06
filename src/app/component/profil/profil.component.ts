@@ -13,6 +13,7 @@ import { Enable } from '../models/enable';
 import { forkJoin } from 'rxjs';
 import { NgModel } from '@angular/forms';
 import { SocketIoService } from 'src/app/service/socket-io.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profil',
@@ -37,7 +38,8 @@ export class ProfilComponent {
   constructor(
     private playerService: PlayerService,
     private paramService: ParamService,
-    private socketService: SocketIoService
+    private socketService: SocketIoService,
+    private router: Router
   ) {
     this.socketService
       .ecouteDuJoueurDepuisServeur()
@@ -173,5 +175,22 @@ export class ProfilComponent {
       // console.log('je save mon joueur', this.player);
       // this.socketService.envoieDePlayerAuServer(this.player);
     }
+  }
+
+  suppressionDuJoueur() {
+    const supp = this.playerService.delete(this.player).subscribe({
+      next: (response) => {
+        console.log(response);
+        this.player;
+        this.valueModalProfil.emit(false);
+        location.reload();
+        return;
+      },
+      error: (error) => {
+        console.log(error);
+        return;
+      },
+    });
+    localStorage.removeItem('token');
   }
 }

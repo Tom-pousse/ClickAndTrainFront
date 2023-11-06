@@ -40,23 +40,6 @@ export class PlayerService {
     );
   }
 
-  // voir avec formateur pourquoi ici ça marche mais pas dans le service aquire ... pb initialisation cascade ? conflit requete ?
-  updateLvlUpgrade(player: Acquire): Observable<Acquire> {
-    const headers = this.setHeaders();
-    // console.log('save', player.num_score);
-    return this.http.patch<Acquire>(`http://localhost:3000/api/jeu`, player, {
-      headers,
-    });
-  }
-
-  // updatePlayer(player: Player): Observable<Player> {
-  //   const headers = this.setHeaders();
-  //   // console.log('save', player.num_score);
-  //   return this.http.patch<Player>(`http://localhost:3000/api/jeu`, player, {
-  //     headers,
-  //   });
-  // }
-
   updatePlayer(player: Player): Observable<Player> {
     // Mise à jour du joueur via HTTP
     const headers = this.setHeaders();
@@ -77,5 +60,10 @@ export class PlayerService {
     return this.http.get<Player[]>(`${this.baseApiUrl}/accueil`, {
       headers,
     });
+  }
+
+  delete(player: Player): Observable<Player> {
+    const headers = this.setHeaders();
+    return this.http.delete<Player>(`${this.baseApiUrl}/profil`, { headers });
   }
 }
