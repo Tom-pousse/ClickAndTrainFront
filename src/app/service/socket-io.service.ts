@@ -14,7 +14,7 @@ export class SocketIoService {
   constructor() {
     this.socket = io(this.baseUrl);
     this.socket.on('connect', () => {
-      console.log('Connecté à Socket.IO...');
+      // console.log('Connecté à Socket.IO...');
     });
     this.socket.on('connect_error', (error) => {
       console.error('Erreur de connexion à Socket.IO', error);
@@ -25,7 +25,7 @@ export class SocketIoService {
   // j'envoie vers le serveur
   envoieDePlayerAuServer(data: Player) {
     this.socket.emit('clickZone', data);
-    console.log("je part d'ici");
+    // console.log("je part d'ici");
   }
 
   // Méthode pour écouter l'événement du serveur
@@ -33,7 +33,7 @@ export class SocketIoService {
     return new Observable((observer) => {
       this.socket.on('clickZone', (data) => {
         observer.next(data);
-        console.log('je reviens par la');
+        // console.log('je reviens par la');
       });
     });
   }

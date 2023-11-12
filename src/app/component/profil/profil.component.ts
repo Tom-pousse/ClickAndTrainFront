@@ -26,6 +26,8 @@ export class ProfilComponent {
   param!: Param[];
 
   enable!: Enable;
+  anim: boolean = true;
+  son: boolean = true;
 
   // je creer une transmition de mon enfant vers son parent
   @Output() valueModalProfil: EventEmitter<boolean> =
@@ -45,7 +47,10 @@ export class ProfilComponent {
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
         this.player = playerData;
-        console.log("j'ai mis ç jour mon player", this.player, playerData);
+        this.son = playerData.enable[1].boo_status;
+        this.anim = playerData.enable[1].boo_status;
+
+        // console.log("j'ai mis ç jour mon player", this.player, playerData);
       });
   }
 
@@ -66,28 +71,34 @@ export class ProfilComponent {
         this.initProfil();
         console.log('methode 1', param);
 
-        console.log('jai cliqué', event.target);
+        // console.log('jai cliqué', event.target);
         const change = event.target as HTMLInputElement;
         change.value;
-        console.log('valeur de mon click', change.value);
+        // console.log('valeur de mon click', change.value);
         const idEnable = this.player.enable.find(
           (x) => x.id_param === param.id_param
         );
         if (param.id_param === idEnable?.id_param) {
-          console.log('id de enable est egal à :', idEnable.id_param);
+          // console.log('id de enable est egal à :', idEnable.id_param);
 
           if (change.value === 'true') {
             idEnable.boo_status = true;
-            console.log('je save mon joueur', this.player);
+            // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.animSelectionne.emit(idEnable.boo_status);
+            this.anim = idEnable.boo_status;
+            console.log('ici1', this.anim);
+
             return;
           }
           if (change.value === 'false') {
             idEnable.boo_status = false;
-            console.log('je save mon joueur', this.player);
+            // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.animSelectionne.emit(idEnable.boo_status);
+            this.anim = idEnable.boo_status;
+            console.log('ici1', this.anim);
+
             return;
           }
         }
@@ -107,20 +118,26 @@ export class ProfilComponent {
         console.log(idEnable2);
 
         if (param.id_param === idEnable2?.id_param) {
-          console.log('id de enable est egal à :', idEnable2!.id_param);
+          // console.log('id de enable est egal à :', idEnable2!.id_param);
 
           if (change.value === 'true' || undefined) {
             idEnable2.boo_status = true;
-            console.log('je save mon joueur', this.player);
+            // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.sonSelectionne.emit(idEnable2.boo_status);
+            this.son = idEnable2.boo_status;
+            console.log('ici', this.son);
+
             return;
           }
           if (change.value === 'false') {
             idEnable2.boo_status = false;
-            console.log('je save mon joueur', this.player);
+            // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.sonSelectionne.emit(idEnable2.boo_status);
+            this.son = idEnable2.boo_status;
+            console.log('ici', this.son);
+
             return;
           }
         }
@@ -132,10 +149,6 @@ export class ProfilComponent {
   transmettreValeurProfil() {
     // j'envoie ça
     this.valueModalProfil.emit(false);
-  }
-  deconnexion() {
-    localStorage.clear();
-    location.reload();
   }
 
   initProfil() {

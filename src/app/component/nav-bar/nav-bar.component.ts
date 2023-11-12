@@ -20,8 +20,17 @@ export class NavBarComponent {
   // je déclare ma valeur false pour cacher la fenettrre modal classement
   hideClassementModal: boolean = false;
 
-  constructor(private playerService: PlayerService) {}
+  player!: Player;
 
+  constructor(private playerService: PlayerService) {
+    this.playerService.getProfil().subscribe((x) => {
+      this.player = x;
+    });
+  }
+  deconnexion() {
+    localStorage.clear();
+    location.reload();
+  }
   // au click je change la valeur en true pour aficher la modal
   openModalProfil() {
     this.hideProfilModal = true;
@@ -49,7 +58,7 @@ export class NavBarComponent {
 
   // je recupère l'info de classement quand la modal ce ferme et la copie dans ma variable hide pour remettre à false
   retourDeClassement(valueLog: boolean) {
-    console.log(valueLog);
+    // console.log(valueLog);
     this.hideClassementModal = valueLog;
   }
 
@@ -57,11 +66,11 @@ export class NavBarComponent {
   infoPourJeuDuSon(valueLog: boolean) {
     // console.log('La valeur retour', valueLog);
     this.valeurPourJeuDuSon = valueLog;
-    console.log('valeur de son dans nav bar', this.valeurPourJeuDuSon);
+    // console.log('valeur de son dans nav bar', this.valeurPourJeuDuSon);
   }
 
   infoPourJeuDeAnim(valueLog: boolean) {
-    console.log('La valeur retour de animation dans nav bar', valueLog);
+    // console.log('La valeur retour de animation dans nav bar', valueLog);
     this.valeurPourJeuDeAnim = valueLog;
   }
 }

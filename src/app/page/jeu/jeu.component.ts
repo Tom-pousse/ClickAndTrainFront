@@ -154,7 +154,7 @@ export class JeuComponent implements OnInit {
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
         this.player.acquire = playerData.acquire;
-        console.log("j'ai mis à jour mon player", this.player, playerData);
+        // console.log("j'ai mis à jour mon player", this.player, playerData);
         this.player = playerData;
         this.activationDuSon();
         this.animAutoByUpgrade();
@@ -191,12 +191,12 @@ export class JeuComponent implements OnInit {
     this.calculDuTotalIncAuto();
     localStorage.getItem('animation');
 
-    console.log('ici', this.player);
+    // console.log('ici', this.player);
   }
 
   // ------------ methode incrémental
   incrementalZone() {
-    console.log(typeof this.player.num_score);
+    // console.log(typeof this.player.num_score);
 
     typeof this.player.num_score;
     this.animationImg();
@@ -204,7 +204,7 @@ export class JeuComponent implements OnInit {
     this.player.num_click += 1;
     this.sonTrain();
 
-    console.log(this.player);
+    // console.log(this.player);
 
     this.socketIoService.envoieDePlayerAuServer(this.player);
   }
@@ -245,11 +245,11 @@ export class JeuComponent implements OnInit {
   // méthode d'activation != ? du son
   activationDuSon() {
     const monParam = this.params.find((x) => x.nom_label === 'son');
-    console.log(this.params.find((x) => x.nom_label === 'son'));
+    // console.log(this.params.find((x) => x.nom_label === 'son'));
     const monIdParam = this.player.enable.find(
       (x) => x.id_param === monParam?.id_param
     );
-    console.log('test', monIdParam);
+    // console.log('test', monIdParam);
 
     // this.player.enable.find();
     if (monIdParam) {
@@ -297,7 +297,7 @@ export class JeuComponent implements OnInit {
       monIdSelect.id_upgrade === monUpgrade.id_upgrade &&
       this.player.num_score >= monUpgrade.num_cost
     ) {
-      console.log('jai trouver un id');
+      // console.log('jai trouver un id');
       monIdSelect.num_lvl = monIdSelect.num_lvl + 1;
       // console.log('mon lvl mis a jour', monIdSelect, this.player);
 
@@ -322,7 +322,7 @@ export class JeuComponent implements OnInit {
       this.player &&
       this.player.num_score >= monUpgrade.num_cost
     ) {
-      console.log("je n'ai pas trouver id");
+      // console.log("je n'ai pas trouver id");
 
       this.acquire = {
         id_players: this.player.id_players,
@@ -359,7 +359,7 @@ export class JeuComponent implements OnInit {
     const monAnim = this.player.enable.find(
       (x) => x.id_param === monAnimationParam?.id_param
     );
-    console.log('test mon anim', monAnim);
+    // console.log('test mon anim', monAnim);
     if (monAnim) {
       this.maValeurDeProfilAnim = monAnim!.boo_status;
     }
@@ -375,7 +375,7 @@ export class JeuComponent implements OnInit {
       (this.maValeurDeProfilAnim === undefined && jeTestsiAcquire !== undefined)
     ) {
       clearInterval(this.intervalIdPourAnimation);
-      console.log('test anim on', this.maValeurDeProfilAnim);
+      // console.log('test anim on', this.maValeurDeProfilAnim);
 
       this.intervalIdPourAnimation = setInterval(() => {
         this.animationImg();

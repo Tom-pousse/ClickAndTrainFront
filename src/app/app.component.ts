@@ -11,7 +11,8 @@ export class AppComponent {
 
   constructor(private socketService: SocketIoService) {
     this.socketService.socket.on('server-event', (data) => {
-      console.log('Données reçues du serveur:', data);
+      // console.log('Données reçues du serveur:', data);
+      data;
     });
 
     this.socketService.socket.emit('client-event', {

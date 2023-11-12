@@ -1,14 +1,7 @@
 <div class="modal">
   <div class="modal-content">
-    <div class="bouton">
-      <button (click)="deconnexion()">Deconnexion</button>
-      <button type="button" (click)="suppressionDuJoueur()">
-        Suppression du compte
-      </button>
-    </div>
-    <h2>Profil</h2>
     <div class="tableauPosition">
-      <table border="1" *ngIf="player">
+      <table *ngIf="player">
         <tr>
           <th>Pseudo</th>
           <td>{{ player.nom_pseudo }}</td>
@@ -17,41 +10,54 @@
           <th>Email</th>
           <td>{{ player.nom_email }}</td>
         </tr>
-        <tr>
-          <th>Score</th>
-          <td>{{ player.num_score }}</td>
-        </tr>
-
-        <!-- <tr>
-          <td>{{ player.nom_pseudo }}</td>
-          <td>{{ player.nom_email }}</td>
-          <td>{{ player.num_score }}</td>
-        </tr> -->
       </table>
     </div>
-    <div *ngFor="let unParam of param; let i = index">
-      <!-- avec i je dois creer un tableau de méthode -->
-      <div *ngIf="unParam">
-        <label for="{{ unParam.nom_label }}">{{ unParam.nom_label }}</label>
-        <input
-          (change)="choixUser[i].methode($event, unParam)"
-          type="radio"
-          id="{{ unParam.nom_label }}"
-          name="{{ unParam.nom_label }}"
-          [value]="true"
-        />
-        <input
-          (change)="choixUser[i].methode($event, unParam)"
-          type="radio"
-          id="{{ unParam.nom_label }}"
-          name="{{ unParam.nom_label }}"
-          [value]="false"
-        />
+    <div>
+      <div *ngFor="let unParam of param; let i = index">
+        <!-- avec i je dois creer un tableau de méthode -->
+        <div class="selection">
+          <p class="name">{{ unParam.nom_label }}</p>
+          <label
+            [ngClass]="{ test: player.enable[i].boo_status === true }"
+            class="btnProfilLeft"
+            for="{{ unParam.nom_label }}"
+            >ON {{ i }}</label
+          >
+          <!-- [ngClass]="son ? 'paramActif + i' : 'paramDesactif + i'" -->
+
+          <input
+            (change)="choixUser[i].methode($event, unParam)"
+            type="radio"
+            id="{{ unParam.nom_label }}"
+            name="{{ unParam.nom_label }}"
+            [value]="true"
+          />
+          <!-- [ngClass]="{
+            'yourTrueClass':  === true,
+            'yourFalseClass':  === false || undefined
+          }" -->
+          <label
+            [ngClass]="{ test1: player.enable[i].boo_status === false }"
+            class="btnProfilRight"
+            for="{{ unParam.nom_label + i }}"
+          >
+            OFF, {{ i }}
+          </label>
+          <input
+            (change)="choixUser[i].methode($event, unParam)"
+            type="radio"
+            id="{{ unParam.nom_label + i }}"
+            name="{{ unParam.nom_label }}"
+            [value]="false"
+          />
+        </div>
       </div>
     </div>
-
     <div>
       <button (click)="transmettreValeurProfil()">Fermer</button>
+      <button type="button" (click)="suppressionDuJoueur()">
+        Suppression du compte
+      </button>
     </div>
   </div>
 </div>

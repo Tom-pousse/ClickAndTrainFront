@@ -56,6 +56,9 @@ th {
   justify-content: center;
 }
 button {
+  background-color: #c2b8b6;
+  border-radius: 0rem 2rem;
+  height: 5vh;
   margin-top: 5rem;
   width: 15vw;
 }

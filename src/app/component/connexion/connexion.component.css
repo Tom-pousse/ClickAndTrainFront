@@ -14,6 +14,7 @@
 }
 
 .modal-content {
+  box-shadow: #000000 0px 0px 15px 5px;
   display: flex;
   text-align: center;
   justify-content: center;
@@ -21,10 +22,49 @@
   font-size: x-large;
   font-weight: 500;
   border-radius: 2rem;
-  background-color: hsl(187, 20%, 80%);
+  background-color: #c2d4d6;
   margin: 15% auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 250px;
+  width: 300px;
   position: fixed;
+}
+
+.positionSwitch {
+  display: flex;
+  justify-content: center;
+  /* background-color: red; */
+}
+button {
+  background-color: #c2b8b6;
+  border-radius: 0rem 2rem;
+  height: 5vh;
+  min-width: 5vw;
+  margin-top: 1vh;
+  width: 30vw;
+}
+input {
+  width: max-content;
+  margin: 0;
+  padding: 0;
+}
+
+.tst {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  /* background-color: red; */
+  width: 100%;
+}
+input {
+  width: 180px;
+}
+
+.tst1 {
+  padding: 0.5vw;
+  display: flex;
+  /* width: 180px; */
+  /* background-color: red; */
+  justify-content: space-around;
 }

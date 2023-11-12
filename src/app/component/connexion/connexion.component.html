@@ -4,8 +4,9 @@
     <div class="modal-content">
       <!-- methode on login sur le bouton submit -->
       <form [formGroup]="connexion" (ngSubmit)="onLogin()">
+        <h1>Click and Train</h1>
         <h2>Connexion</h2>
-        <div>
+        <div class="tst">
           <label for="nom_pseudo">Nom d'utilisateur:</label>
           <input
             type="text"
@@ -14,25 +15,25 @@
             formControlName="nom_pseudo"
           />
         </div>
-        <div>
+        <div class="tst">
           <label for="nom_password">mot de passe:</label>
           <input
-            type="nom_password"
+            type="password"
             id="nom_password"
             name="nom_password"
             formControlName="nom_password"
           />
         </div>
-        <div>
+        <div class="tst1">
           <!-- methode au click pour transmettre la valeur boolean pour femer la fenetre -->
           <button (click)="transmettreValeur()">Fermer</button>
           <button type="submit">Connexion</button>
         </div>
+        <div class="positionSwitch">
+          <!-- methode switch pour switch entre log et register -->
+          <button (click)="switchLog()">Pas encore inscrit ?</button>
+        </div>
       </form>
-      <div>
-        <!-- methode switch pour switch entre log et register -->
-        <button (click)="switchLog()">Pas encore inscrit ?</button>
-      </div>
     </div>
   </div>
   <!-- if registred pour switch entre connexion ou inscription -->
@@ -63,7 +64,7 @@
         <div>
           <label for="nom_password">mot de passe:</label>
           <input
-            type="nom_password"
+            type="password"
             id="nom_password"
             name="nom_password"
             formControlName="nom_password"
@@ -85,12 +86,11 @@
           <button (click)="transmettreValeur()">Fermer</button>
           <button type="submit">Connexion</button>
         </div>
-
-        <div>
-          <!-- methode switch pour connexion/inscritpion -->
-          <a (click)="switchLog()">Déja inscrit ?</a>
-        </div>
       </form>
+    </div>
+    <div>
+      <!-- methode switch pour connexion/inscritpion -->
+      <a (click)="switchLog()">Déja inscrit ?</a>
     </div>
   </div>
 </div>

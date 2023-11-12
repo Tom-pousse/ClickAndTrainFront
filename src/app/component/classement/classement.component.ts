@@ -19,7 +19,7 @@ export class ClassementComponent {
   }
   // la methode qui va envoyer l'info false pour fermer la fenettre
   transmettreValeurClassement() {
-    console.log('profil', this.valueClassementProfil.emit(false));
+    // console.log('profil');
 
     // j'envoie ça
     this.valueClassementProfil.emit(false);

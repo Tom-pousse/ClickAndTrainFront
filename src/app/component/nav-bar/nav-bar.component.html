@@ -1,10 +1,8 @@
 <div class="navbar">
+  <a (click)="openModalClassement()">Classement</a>
   <!-- methode ou click pour open modal profil -->
   <a (click)="openModalProfil()">Profil</a>
-
-  <!-- methode ou click pour open modal connexion/inscription-->
-  <a (click)="openModalLog()">Connexion</a>
-  <a (click)="openModalClassement()">Classement</a>
+  <a *ngIf="player" (click)="deconnexion()">deconnexion</a>
 </div>
 
 <!-- dans ma methode retourdeprofil je recupere la valeur de valuemodal profil pour fermer la modal  -->

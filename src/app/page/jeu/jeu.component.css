@@ -86,7 +86,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 .pair6 {
   border: 1px solid black;
@@ -102,7 +102,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 
 .impair5 {
@@ -120,7 +120,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 .pair4 {
   border: 1px solid black;
@@ -136,7 +136,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 
 .pair2 {
@@ -152,7 +152,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 /* pair */
 .impair1 {
@@ -170,7 +170,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 .impair7 {
   border: 1px solid black;
@@ -187,7 +187,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 
 /* ------- ici impair */
@@ -205,7 +205,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 .impair9 {
   border: 1px solid black;
@@ -221,7 +221,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 
 .pair8 {
@@ -239,7 +239,7 @@ td {
   font-size: large;
   width: calc((100vw - 70vw));
   z-index: 2;
-  box-shadow: rgb(185, 22, 22) 0rem 0rem 0.1rem 0.1rem;
+  box-shadow: rgb(0, 0, 0) 0rem 0rem 0.1rem 0.1rem;
 }
 
 .display {

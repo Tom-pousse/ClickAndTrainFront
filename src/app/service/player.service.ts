@@ -28,7 +28,7 @@ export class PlayerService {
   }
 
   inscriptionUtilisateur(data: Player): Observable<Player> {
-    console.log(data);
+    // console.log(data);
 
     return this.http.post<Player>(`${this.baseApiUrl}/auth/register`, data);
   }
