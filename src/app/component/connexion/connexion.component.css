@@ -12,13 +12,21 @@
   align-items: center;
   justify-content: center;
 }
+.titre {
+  font-size: 40px;
+  margin-bottom: 1rem;
+}
+h2 {
+  font-size: 32px;
+  margin-bottom: 0.7rem;
+}
 
 .modal-content {
   box-shadow: #000000 0px 0px 15px 5px;
   display: flex;
   text-align: center;
   justify-content: center;
-
+  height: 55vh;
   font-size: x-large;
   font-weight: 500;
   border-radius: 2rem;
@@ -42,6 +50,7 @@ button {
   min-width: 5vw;
   margin-top: 1vh;
   width: 30vw;
+  cursor: pointer;
 }
 input {
   width: max-content;
@@ -49,27 +58,31 @@ input {
   padding: 0;
 }
 
-.tst {
+.Formul {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  /* background-color: red; */
+
   width: 100%;
 }
 input {
   width: 180px;
 }
+.switch {
+  background-color: #c2d4d6;
+}
 
-.tst1 {
+.buttonPosition {
   padding: 0.5vw;
   display: flex;
-  /* width: 180px; */
-  /* background-color: red; */
   justify-content: space-around;
 }
 @media only screen and (max-width: 650px), (max-height: 500px) {
   * {
     font-size: 13px;
+  }
+  .titre {
+    font-size: 28px;
   }
 }
