@@ -39,3 +39,8 @@ a:hover {
   transform: scale(1.1);
   overflow-y: none;
 }
+@media only screen and (max-width: 650px), (max-height: 500px) {
+  * {
+    font-size: 13px;
+  }
+}

@@ -1,4 +1,5 @@
-<div *ngIf="player">
+<div *ngIf="enModePaysage">Tourner votre téléphone</div>
+<div *ngIf="player && !enModePaysage">
   <div class="positionDuTableau">
     <!-- pour afficher le nom du joueur si connecter -->
     <table>
@@ -67,4 +68,5 @@
     </div>
   </div>
 </div>
+
 <app-connexion *ngIf="!player"></app-connexion>

@@ -1,4 +1,5 @@
 /* mise en page de l'img */
+
 img {
   height: calc(100vh - 18vh);
   width: 60vw;
@@ -249,4 +250,9 @@ td {
 .reduct {
   font-style: italic;
   font-size: x-small;
+}
+@media only screen and (max-width: 650px), (max-height: 500px) {
+  * {
+    font-size: 13px;
+  }
 }

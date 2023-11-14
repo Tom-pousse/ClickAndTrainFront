@@ -13,6 +13,8 @@
 }
 
 .modal-content {
+  box-shadow: #000000 0px 0px 15px 5px;
+
   height: 70vh;
   width: 50vw;
   display: flex;
@@ -31,6 +33,7 @@
   position: fixed;
 }
 .tableauPosition {
+  margin-top: 2vh;
   display: flex;
   justify-content: center;
 }
@@ -61,4 +64,13 @@ button {
   height: 5vh;
   margin-top: 5rem;
   width: 15vw;
+}
+
+@media only screen and (max-width: 650px), (max-height: 500px) {
+  * {
+    font-size: 13px;
+  }
+  h1 {
+    font-size: 20px;
+  }
 }

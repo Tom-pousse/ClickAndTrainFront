@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { Acquire } from 'src/app/component/models/acquire';
 import { Player } from 'src/app/component/models/player';
 
@@ -141,7 +141,28 @@ export class JeuComponent implements OnInit {
   copieUpgrade!: Upgrade[];
 
   params!: Param[];
+  enModePaysage: boolean = false; // Variable pour suivre l'état de l'orientation
 
+  @HostListener('window:orientationchange', ['$event'])
+  onOrientationChange(event: Event) {
+    this.verifierOrientation();
+  }
+
+  verifierOrientation() {
+    this.enModePaysage = window.matchMedia('(orientation: landscape)').matches;
+
+    const tourner = "Tourner l'ecran pour jouer";
+    if (!this.enModePaysage) {
+      console.log('mode paysage');
+      // Ici, vous pouvez modifier une variable pour afficher le message dans votre template
+      // Par exemple : this.messageAAfficher = "Veuillez passer en mode paysage pour une meilleure expérience.";
+      return;
+    } else {
+      // Cacher le message
+      console.log('pas mode paysage');
+      return tourner;
+    }
+  }
   constructor(
     private playerService: PlayerService,
     private upgradeService: UpgradeService,

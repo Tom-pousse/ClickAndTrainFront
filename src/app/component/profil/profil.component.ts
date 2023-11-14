@@ -64,6 +64,15 @@ export class ProfilComponent {
     });
   }
 
+  getBooStatusParam(id: number): boolean {
+    const playerParam = this.player.enable.find((x) => x.id_param == id);
+    if (!playerParam) {
+      return false;
+    }
+
+    return playerParam.boo_status;
+  }
+
   // création d'un tableau de méthode (pour chaque itération de param une méthode qui corespond)
   choixUser = [
     {
