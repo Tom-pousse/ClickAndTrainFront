@@ -27,11 +27,4 @@ export class UpgradeService {
       headers,
     });
   }
-
-  getOneUpgrade(): Observable<Upgrade> {
-    const headers = this.setHeaders();
-    return this.http.get<Upgrade>(`${this.baseApiUrl}/upgrade`, {
-      headers,
-    });
-  }
 }

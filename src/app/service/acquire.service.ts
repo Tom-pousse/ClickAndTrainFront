@@ -25,22 +25,4 @@ export class AcquireService {
       headers,
     });
   }
-
-  createAcquire(acquire: Acquire): Observable<Acquire> {
-    const headers = this.setHeaders();
-    return this.http.post<Acquire>(`${this.baseApiUrl}/acquire`, acquire, {
-      headers,
-    });
-  }
-
-  updateAcquire(acquire: Acquire): Observable<Acquire> {
-    const headers = this.setHeaders();
-    return this.http.patch<Acquire>(
-      `${this.baseApiUrl}/acquire/profil`,
-      acquire,
-      {
-        headers,
-      }
-    );
-  }
 }

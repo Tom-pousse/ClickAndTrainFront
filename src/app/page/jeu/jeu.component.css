@@ -251,8 +251,26 @@ td {
   font-style: italic;
   font-size: x-small;
 }
+.turn {
+  width: 50vw;
+  text-align: center;
+  font-size: 36px;
+  font-weight: bold;
+  position: absolute;
+  left: calc((100% - 75%));
+  top: calc(100% - 55%);
+}
 @media only screen and (max-width: 650px), (max-height: 500px) {
   * {
     font-size: 13px;
+  }
+  .turn {
+    width: 50vw;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    position: absolute;
+    left: calc((100% - 75%));
+    top: calc(100% - 55%);
   }
 }

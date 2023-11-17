@@ -7,17 +7,6 @@ import { SocketIoService } from './service/socket-io.service';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  // private minWidth: number = 650;
-  // private minHeight: number = 500;
-  // @HostListener('window:resize', ['$event'])
-  // onResize(event: Event) {
-  //   if (
-  //     window.innerWidth < this.minWidth ||
-  //     window.innerHeight < this.minHeight
-  //   ) {
-  //     window.resizeTo(this.minWidth, this.minHeight);
-  //   }
-  // }
   title = 'click-train-front';
 
   constructor(private socketService: SocketIoService) {

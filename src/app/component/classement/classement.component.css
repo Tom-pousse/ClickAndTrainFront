@@ -15,7 +15,7 @@
 .modal-content {
   box-shadow: #000000 0px 0px 15px 5px;
 
-  height: 70vh;
+  min-height: 60vh;
   width: 50vw;
   display: flex;
   flex-direction: column;
@@ -75,12 +75,22 @@ button {
     font-size: 20px;
   }
   table {
+    min-width: 180px;
     width: 300px;
+    overflow-y: auto;
   }
   .tableauPosition {
     overflow-y: auto;
   }
   .modal-content {
-    height: 55vh;
+    min-width: 180px;
+    min-height: 300px;
+
+    overflow: auto;
+  }
+
+  button {
+    min-width: 130px;
+    min-height: 20px;
   }
 }

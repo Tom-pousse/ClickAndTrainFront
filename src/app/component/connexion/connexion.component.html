@@ -7,22 +7,28 @@
         <h1 class="titre">Click and Train</h1>
         <h2>Connexion</h2>
         <div class="Formul">
-          <label for="nom_pseudo">Nom d'utilisateur:</label>
+          <label for="nom_pseudo1">Nom d'utilisateur:</label>
           <input
             type="text"
-            id="nom_pseudo"
-            name="nom_pseudo"
+            id="nom_pseudo1"
+            name="nom_pseudo1"
             formControlName="nom_pseudo"
+            placeholder="Pseudo"
+            (focus)="enleverErreur('nom_pseudo')"
           />
+          <div class="message">{{ pseudoError1 }}</div>
         </div>
         <div class="Formul">
-          <label for="nom_password">mot de passe:</label>
+          <label for="nom_password1">mot de passe:</label>
           <input
             type="password"
-            id="nom_password"
-            name="nom_password"
+            id="nom_password1"
+            name="nom_password1"
             formControlName="nom_password"
+            placeholder="Mot de passe"
+            (focus)="enleverErreur('nom_password1')"
           />
+          <div class="message">{{ motDePasseError1 }}</div>
         </div>
         <div class="buttonPosition">
           <!-- methode au click pour transmettre la valeur boolean pour femer la fenetre -->
@@ -52,7 +58,10 @@
             id="nom_pseudo"
             name="nom_pseudo"
             formControlName="nom_pseudo"
+            placeholder="Pseudo"
+            (focus)="enleverErreur('nom_pseudo')"
           />
+          <div class="message">{{ pseudoError }}</div>
         </div>
         <div class="Formul">
           <label for="nom_email">nom_email:</label>
@@ -61,34 +70,32 @@
             id="nom_email"
             name="nom_email"
             formControlName="nom_email"
+            placeholder="example@email.fr"
+            (focus)="enleverErreur('nom_email')"
           />
+          <div class="message">{{ emailError }}</div>
         </div>
         <div class="Formul">
           <label for="nom_password">mot de passe:</label>
           <input
-            type="password"
+            type="text"
             id="nom_password"
             name="nom_password"
             formControlName="nom_password"
+            placeholder="Mot de passe"
+            (focus)="enleverErreur('nom_password')"
           />
+          <div class="message">{{ motDePasseError }}</div>
         </div>
-        <!-- <div>
-          <label for="nom_pasword_confirme"
-            >confirmez votre mot de passe:</label
-          >
-          <input
-            type="nom_pasword_confirme"
-            id="nom_pasword_confirme"
-            name="nom_pasword_confirme"
-            formControlName="nom_pasword_confirme"
-          />
-        </div> -->
-        <div>
+
+        <div class="buttonPosition">
           <!-- methode au click pour la value boolean de femer la fenetre -->
 
           <button type="submit">Connexion</button>
         </div>
-        <button class="switch" (click)="switchLog()">Déja inscrit ?</button>
+        <div class="positionSwitch">
+          <button class="switch" (click)="switchLog()">Déja inscrit ?</button>
+        </div>
       </form>
     </div>
     <div>

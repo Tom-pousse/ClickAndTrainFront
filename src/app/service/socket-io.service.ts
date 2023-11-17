@@ -37,19 +37,4 @@ export class SocketIoService {
       });
     });
   }
-
-  // envoieDePlayerAcquisitionAuServer(data: Player) {
-  //   this.socket.emit('upZone', data);
-  //   // console.log('je save');
-  // }
-
-  // // Méthode pour écouter l'événement du serveur
-  // ecouteDuJoueurAcquisitionDepuisServeur(): Observable<Player> {
-  //   return new Observable((observer) => {
-  //     this.socket.on('upZone', (data) => {
-  //       observer.next(data);
-  //       // console.log('je prend');
-  //     });
-  //   });
-  // }
 }
