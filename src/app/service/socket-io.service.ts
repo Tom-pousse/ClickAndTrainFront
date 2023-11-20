@@ -8,30 +8,43 @@ import { Player } from '../component/models/player';
   providedIn: 'root',
 })
 export class SocketIoService {
-  public socket: Socket;
+  public socket?: Socket;
   private baseUrl = 'http://localhost:3000';
 
   constructor() {
-    this.socket = io(this.baseUrl);
-    this.socket.on('connect', () => {
-      // console.log('Connecté à Socket.IO...');
-    });
-    this.socket.on('connect_error', (error) => {
-      console.error('Erreur de connexion à Socket.IO', error);
-    });
+    const token = localStorage.getItem('token');
+    console.log('teste io');
+
+    if (token) {
+      this.socket = io(this.baseUrl);
+
+      this.socket.on('connect', () => {
+        console.log('Connecté à Socket.IO...');
+      });
+
+      this.socket.on('disconnect', () => {
+        console.log('Déconnecté de Socket.IO...');
+      });
+
+      this.socket.on('connect_error', (error) => {
+        console.error('Erreur de connexion à Socket.IO', error);
+      });
+    } else {
+      console.log('Pas de token, Socket.IO désactivé.');
+    }
   }
 
   // ...
   // j'envoie vers le serveur
   envoieDePlayerAuServer(data: Player) {
-    this.socket.emit('clickZone', data);
+    this.socket!.emit('clickZone', data);
     // console.log("je part d'ici");
   }
 
   // Méthode pour écouter l'événement du serveur
   ecouteDuJoueurDepuisServeur(): Observable<Player> {
     return new Observable((observer) => {
-      this.socket.on('clickZone', (data) => {
+      this.socket!.on('clickZone', (data) => {
         observer.next(data);
         // console.log('je reviens par la');
       });

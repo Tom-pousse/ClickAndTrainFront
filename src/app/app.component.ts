@@ -8,15 +8,4 @@ import { SocketIoService } from './service/socket-io.service';
 })
 export class AppComponent {
   title = 'click-train-front';
-
-  constructor(private socketService: SocketIoService) {
-    this.socketService.socket.on('server-event', (data) => {
-      // console.log('Données reçues du serveur:', data);
-      data;
-    });
-
-    this.socketService.socket.emit('client-event', {
-      message: 'Hello from the client!',
-    });
-  }
 }

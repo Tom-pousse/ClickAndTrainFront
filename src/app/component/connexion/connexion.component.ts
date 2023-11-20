@@ -53,7 +53,7 @@ export class ConnexionComponent {
   constructor(private playerService: PlayerService, private router: Router) {}
 
   onInscription() {
-    // console.log('mon joueur', this.inscription.value);
+    console.log('mon joueur', this.inscription.value);
     this.playerService
       .inscriptionUtilisateur(this.inscription.value)
       .subscribe({
@@ -98,7 +98,6 @@ export class ConnexionComponent {
 
   // methode au clic
   transmettreValeur() {
-    // j'envoie ça
     // console.log('transmition', this.valueModalLog.emit(false));
     this.valueModalLog.emit(false);
   }

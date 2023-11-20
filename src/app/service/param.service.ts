@@ -21,7 +21,7 @@ export class ParamService {
 
   getParam(): Observable<Param[]> {
     const headers = this.setHeaders();
-    // console.log('je suis ici');
+    console.log('je suis ici');
 
     return this.http.get<Param[]>(`${this.baseApiUrl}/param`, {
       headers,

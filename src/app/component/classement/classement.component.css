@@ -31,11 +31,15 @@
   border: 1px solid #888;
   width: 50vw;
   position: fixed;
+  max-height: 65vh;
 }
 .tableauPosition {
+  max-height: 42vh;
+
   margin-top: 2vh;
   display: flex;
   justify-content: center;
+  overflow: auto;
 }
 table {
   width: 40vw;
@@ -76,6 +80,7 @@ button {
   }
   table {
     min-width: 180px;
+    max-height: 300px;
     width: 300px;
     overflow-y: auto;
   }
@@ -83,8 +88,8 @@ button {
     overflow-y: auto;
   }
   .modal-content {
+    max-height: 350px;
     min-width: 180px;
-    min-height: 300px;
 
     overflow: auto;
   }

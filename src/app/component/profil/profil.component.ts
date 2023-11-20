@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   EventEmitter,
   Input,
@@ -19,6 +20,7 @@ import { Router } from '@angular/router';
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css'],
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ProfilComponent {
   player!: Player;
@@ -28,6 +30,7 @@ export class ProfilComponent {
   enable!: Enable;
   anim: boolean = true;
   son: boolean = true;
+  playerParam?: Enable;
 
   // je creer une transmition de mon enfant vers son parent
   @Output() valueModalProfil: EventEmitter<boolean> =
@@ -50,27 +53,30 @@ export class ProfilComponent {
         this.son = playerData.enable[1].boo_status;
         this.anim = playerData.enable[1].boo_status;
 
-        // console.log("j'ai mis ç jour mon player", this.player, playerData);
+        console.log("j'ai mis ç jour mon player", this.player, playerData);
       });
   }
 
   ngOnInit(): void {
     this.paramService.getParam().subscribe((x) => {
-      this.param = x;
+      this.param = [...x];
     });
 
     this.playerService.getProfil().subscribe((profil) => {
-      this.player = profil;
+      this.player = { ...profil };
     });
   }
 
   getBooStatusParam(id: number): boolean {
-    const playerParam = this.player.enable.find((x) => x.id_param == id);
-    if (!playerParam) {
+    if (this.player) {
+      this.playerParam = this.player.enable.find((x) => x.id_param == id);
+    }
+    // console.log(this.playerParam);
+    if (!this.playerParam) {
       return false;
     }
 
-    return playerParam.boo_status;
+    return this.playerParam.boo_status;
   }
 
   // création d'un tableau de méthode (pour chaque itération de param une méthode qui corespond)
@@ -92,6 +98,7 @@ export class ProfilComponent {
 
           if (change.value === 'true') {
             idEnable.boo_status = true;
+            this.anim = true;
             // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.animSelectionne.emit(idEnable.boo_status);
@@ -102,6 +109,7 @@ export class ProfilComponent {
           }
           if (change.value === 'false') {
             idEnable.boo_status = false;
+            this.anim = false;
             // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.animSelectionne.emit(idEnable.boo_status);
@@ -131,6 +139,7 @@ export class ProfilComponent {
 
           if (change.value === 'true' || undefined) {
             idEnable2.boo_status = true;
+            this.son = true;
             // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.sonSelectionne.emit(idEnable2.boo_status);
@@ -141,6 +150,7 @@ export class ProfilComponent {
           }
           if (change.value === 'false') {
             idEnable2.boo_status = false;
+            this.son = false;
             // console.log('je save mon joueur', this.player);
             this.socketService.envoieDePlayerAuServer(this.player);
             this.sonSelectionne.emit(idEnable2.boo_status);

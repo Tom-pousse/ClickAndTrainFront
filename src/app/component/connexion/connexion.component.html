@@ -14,7 +14,7 @@
             name="nom_pseudo1"
             formControlName="nom_pseudo"
             placeholder="Pseudo"
-            (focus)="enleverErreur('nom_pseudo')"
+            (focus)="enleverErreur('nom_pseudo1')"
           />
           <div class="message">{{ pseudoError1 }}</div>
         </div>
@@ -32,7 +32,7 @@
         </div>
         <div class="buttonPosition">
           <!-- methode au click pour transmettre la valeur boolean pour femer la fenetre -->
-          <button (click)="transmettreValeur()">Fermer</button>
+          <!-- <button (click)="transmettreValeur()">Fermer</button> -->
           <button type="submit">Connexion</button>
         </div>
         <div class="positionSwitch">
@@ -50,6 +50,7 @@
       <span class="close"></span>
       <!-- methode au click pour l'inscription -->
       <form [formGroup]="inscription" (ngSubmit)="onInscription()">
+        <h1 class="titre">Click and Train</h1>
         <h2>Inscription</h2>
         <div class="Formul">
           <label for="nom_pseudo">Nom d'utilisateur:</label>
@@ -78,7 +79,7 @@
         <div class="Formul">
           <label for="nom_password">mot de passe:</label>
           <input
-            type="text"
+            type="password"
             id="nom_password"
             name="nom_password"
             formControlName="nom_password"
@@ -89,17 +90,14 @@
         </div>
 
         <div class="buttonPosition">
-          <!-- methode au click pour la value boolean de femer la fenetre -->
-
           <button type="submit">Connexion</button>
         </div>
         <div class="positionSwitch">
+          <!-- methode switch pour connexion/inscritpion -->
           <button class="switch" (click)="switchLog()">Déja inscrit ?</button>
         </div>
       </form>
     </div>
-    <div>
-      <!-- methode switch pour connexion/inscritpion -->
-    </div>
+    <div></div>
   </div>
 </div>

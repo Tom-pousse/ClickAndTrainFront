@@ -143,26 +143,32 @@ export class JeuComponent implements OnInit {
   params!: Param[];
   enModePaysage: boolean = false; // Variable pour suivre l'état de l'orientation
 
-  @HostListener('window:orientationchange', ['$event'])
-  onOrientationChange(event: Event) {
-    this.verifierOrientation();
-  }
+  // @HostListener('window:orientationchange', ['$event'])
+  // onOrientationChange(event: Event) {
+  //   this.verifierOrientation();
+  // }
 
-  verifierOrientation() {
-    this.enModePaysage = window.matchMedia('(orientation: landscape)').matches;
+  // verifierOrientation() {
+  //   // fonction de test pour voir la tailler via inner
 
-    const tourner = "Tourner l'ecran pour jouer";
-    if (!this.enModePaysage) {
-      console.log('mode paysage');
-      // Ici, vous pouvez modifier une variable pour afficher le message dans votre template
-      // Par exemple : this.messageAAfficher = "Veuillez passer en mode paysage pour une meilleure expérience.";
-      return;
-    } else {
-      // Cacher le message
-      console.log('pas mode paysage');
-      return tourner;
-    }
-  }
+  //   console.log('linfo de window ', window);
+
+  //   this.enModePaysage = window.matchMedia('(orientation: landscape)').matches;
+
+  //   const tourner = "Tourner l'ecran pour jouer";
+
+  //   if (!this.enModePaysage && window.screen.width > 600) {
+  //     console.log('mode paysage');
+  //     // Ici, vous pouvez modifier une variable pour afficher le message dans votre template
+  //     // Par exemple : this.messageAAfficher = "Veuillez passer en mode paysage pour une meilleure expérience.";
+  //     return;
+  //   } else {
+  //     // Cacher le message
+  //     console.log('pas mode paysage');
+
+  //     return tourner;
+  //   }
+  // }
   constructor(
     private playerService: PlayerService,
     private upgradeService: UpgradeService,
@@ -171,6 +177,7 @@ export class JeuComponent implements OnInit {
     private paramService: ParamService
   ) {
     // je recoie mes info du joueur à jour
+
     this.socketIoService
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
@@ -199,7 +206,7 @@ export class JeuComponent implements OnInit {
         this.upgrades = [...mesUpgrades];
 
         this.recupDuPrixAuDemarage();
-        const upgrade = this.upgrades.find((x) => x.num_value);
+        // const upgrade = this.upgrades.find((x) => x.num_value);
         this.incrementationParSetIntrval();
 
         this.monTabIm();
@@ -230,6 +237,7 @@ export class JeuComponent implements OnInit {
     this.socketIoService.envoieDePlayerAuServer(this.player);
   }
   animationImg() {
+    this.monTabIm();
     if (this.maValeurDeProfilAnim === false) {
       this.imageIndex = 1;
       return;
@@ -239,8 +247,6 @@ export class JeuComponent implements OnInit {
     } else {
       this.imageIndex = this.imageIndex + 1;
     }
-
-    this.monTabIm();
   }
 
   // voir pour mettre cette condition si désactiver l'animation
@@ -265,21 +271,23 @@ export class JeuComponent implements OnInit {
 
   // méthode d'activation != ? du son
   activationDuSon() {
-    const monParam = this.params.find((x) => x.nom_label === 'son');
-    // console.log(this.params.find((x) => x.nom_label === 'son'));
-    const monIdParam = this.player.enable.find(
-      (x) => x.id_param === monParam?.id_param
-    );
-    // console.log('test', monIdParam);
+    if (this.params) {
+      const monParam = this.params.find((x) => x.nom_label === 'son');
+      // console.log(this.params.find((x) => x.nom_label === 'son'));
+      const monIdParam = this.player.enable.find(
+        (x) => x.id_param === monParam?.id_param
+      );
+      // console.log('test', monIdParam);
 
-    // this.player.enable.find();
-    if (monIdParam) {
-      this.maValeurDeProfilSon! = monIdParam.boo_status;
-      return;
-    }
-    if (this.maValeurDeProfilSon === undefined) {
-      this.maValeurDeProfilSon = true;
-      return;
+      // this.player.enable.find();
+      if (monIdParam) {
+        this.maValeurDeProfilSon! = monIdParam.boo_status;
+        return;
+      }
+      if (this.maValeurDeProfilSon === undefined) {
+        this.maValeurDeProfilSon = true;
+        return;
+      }
     }
   }
 
@@ -374,34 +382,37 @@ export class JeuComponent implements OnInit {
   }
 
   animAutoByUpgrade() {
-    const monAnimationParam = this.params.find(
-      (x) => x.nom_label === 'animation'
-    );
-    const monAnim = this.player.enable.find(
-      (x) => x.id_param === monAnimationParam?.id_param
-    );
-    // console.log('test mon anim', monAnim);
-    if (monAnim) {
-      this.maValeurDeProfilAnim = monAnim!.boo_status;
-    }
+    if (this.params) {
+      const monAnimationParam = this.params.find(
+        (x) => x.nom_label === 'animation'
+      );
+      const monAnim = this.player.enable.find(
+        (x) => x.id_param === monAnimationParam?.id_param
+      );
+      // console.log('test mon anim', monAnim);
+      if (monAnim) {
+        this.maValeurDeProfilAnim = monAnim!.boo_status;
+      }
 
-    const jeTestsiAcquire = this.player.acquire.find((x) => x.id_upgrade);
+      const jeTestsiAcquire = this.player.acquire.find((x) => x.id_upgrade);
 
-    if (this.maValeurDeProfilAnim === false) {
-      clearInterval(this.intervalIdPourAnimation);
-      this.animationImg();
-    }
-    if (
-      this.maValeurDeProfilAnim === true ||
-      (this.maValeurDeProfilAnim === undefined && jeTestsiAcquire !== undefined)
-    ) {
-      clearInterval(this.intervalIdPourAnimation);
-      // console.log('test anim on', this.maValeurDeProfilAnim);
-
-      this.intervalIdPourAnimation = setInterval(() => {
+      if (this.maValeurDeProfilAnim === false) {
+        clearInterval(this.intervalIdPourAnimation);
         this.animationImg();
-      }, 750);
-      return;
+      }
+      if (
+        this.maValeurDeProfilAnim === true ||
+        (this.maValeurDeProfilAnim === undefined &&
+          jeTestsiAcquire !== undefined)
+      ) {
+        clearInterval(this.intervalIdPourAnimation);
+        // console.log('test anim on', this.maValeurDeProfilAnim);
+
+        this.intervalIdPourAnimation = setInterval(() => {
+          this.animationImg();
+        }, 750);
+        return;
+      }
     }
   }
 

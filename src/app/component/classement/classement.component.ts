@@ -15,7 +15,7 @@ export class ClassementComponent {
   constructor(private playerService: PlayerService) {}
 
   ngOnInit(): void {
-    this.playerService.getStat().subscribe((x) => (this.player = x));
+    this.playerService.getall().subscribe((x) => (this.player = x));
   }
   // la methode qui va envoyer l'info false pour fermer la fenettre
   transmettreValeurClassement() {

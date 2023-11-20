@@ -55,7 +55,7 @@ export class PlayerService {
     });
   }
 
-  getStat(): Observable<Player[]> {
+  getall(): Observable<Player[]> {
     const headers = this.setHeaders();
     return this.http.get<Player[]>(`${this.baseApiUrl}/accueil`, {
       headers,
