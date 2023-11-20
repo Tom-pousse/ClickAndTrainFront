@@ -1,5 +1,6 @@
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
@@ -20,7 +21,10 @@ import { Router } from '@angular/router';
   selector: 'app-profil',
   templateUrl: './profil.component.html',
   styleUrls: ['./profil.component.css'],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  // sert a changer la méthode de rafrichessement de l'information
+  //  sert a limité le rafrachissement  des parents ici jeu composant qui avait
+  //  une fuite mémoire du au set interval sur le score qui forcais le rafrachissement du composant profils
 })
 export class ProfilComponent {
   player!: Player;
@@ -44,7 +48,8 @@ export class ProfilComponent {
     private playerService: PlayerService,
     private paramService: ParamService,
     private socketService: SocketIoService,
-    private router: Router
+    private router: Router,
+    private cd: ChangeDetectorRef // activation du changedetector pour gérer l'actualisation des données
   ) {
     this.socketService
       .ecouteDuJoueurDepuisServeur()
@@ -60,10 +65,11 @@ export class ProfilComponent {
   ngOnInit(): void {
     this.paramService.getParam().subscribe((x) => {
       this.param = [...x];
-    });
-
-    this.playerService.getProfil().subscribe((profil) => {
-      this.player = { ...profil };
+      this.playerService.getProfil().subscribe((profil) => {
+        this.player = { ...profil };
+        this.cd.markForCheck();
+        // creer un marquer ici pour actualisé l'info en cas de modif
+      });
     });
   }
 
@@ -71,7 +77,7 @@ export class ProfilComponent {
     if (this.player) {
       this.playerParam = this.player.enable.find((x) => x.id_param == id);
     }
-    // console.log(this.playerParam);
+    console.log(this.playerParam);
     if (!this.playerParam) {
       return false;
     }
