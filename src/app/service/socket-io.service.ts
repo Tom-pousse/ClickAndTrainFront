@@ -38,7 +38,8 @@ export class SocketIoService {
   // j'envoie vers le serveur
   envoieDePlayerAuServer(data: Player) {
     this.socket!.emit('clickZone', data);
-    // console.log("je part d'ici");
+
+    console.log("je part d'ici");
   }
 
   // Méthode pour écouter l'événement du serveur
@@ -46,7 +47,7 @@ export class SocketIoService {
     return new Observable((observer) => {
       this.socket!.on('clickZone', (data) => {
         observer.next(data);
-        // console.log('je reviens par la');
+        console.log('je reviens par la');
       });
     });
   }

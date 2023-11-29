@@ -224,17 +224,14 @@ export class JeuComponent implements OnInit {
 
   // ------------ methode incrémental
   incrementalZone() {
-    // console.log(typeof this.player.num_score);
-
-    typeof this.player.num_score;
     this.animationImg();
     this.player.num_score += 1;
     this.player.num_click += 1;
     this.sonTrain();
 
     // console.log(this.player);
-
     this.socketIoService.envoieDePlayerAuServer(this.player);
+    console.log('eeeee');
   }
   animationImg() {
     this.monTabIm();

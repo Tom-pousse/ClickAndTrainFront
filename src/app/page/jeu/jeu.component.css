@@ -263,10 +263,6 @@ td {
   top: calc(100% - 55%);
 } */
 @media only screen and (max-width: 650px), (max-height: 500px) {
-  * {
-    font-size: 13px;
-  }
-
   .turn {
     width: 50vw;
     text-align: center;
@@ -276,14 +272,27 @@ td {
     left: calc((100% - 75%));
     top: calc(100% - 55%);
   }
+  * {
+    font-size: 13px;
+  }
 }
 */ .turn {
   display: none;
 }
 
 @media screen and (orientation: portrait) {
+  * {
+    font-size: 13px;
+  }
   .turn {
     display: flex;
+    width: 50vw;
+    text-align: center;
+    font-size: 36px;
+    font-weight: bold;
+    position: absolute;
+    left: calc((100% - 75%));
+    top: calc(100% - 55%);
   }
   .pouet {
     display: none;

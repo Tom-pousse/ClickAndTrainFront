@@ -22,7 +22,10 @@
           <div class="onOff">
             <label
               [ngClass]="{
-                green: getBooStatusParam(unParam.id_param) === true
+                green:
+                  getBooStatusParam(unParam.id_param) === true ||
+                  undefined ||
+                  null
               }"
               class="btnProfilLeft"
               for="{{ unParam.nom_label }}"
@@ -37,7 +40,11 @@
               id="{{ unParam.nom_label }}"
               name="{{ unParam.nom_label }}"
               [value]="true"
-              [checked]="getBooStatusParam(unParam.id_param) === true"
+              [checked]="
+                getBooStatusParam(unParam.id_param) === true ||
+                undefined ||
+                null
+              "
             />
 
             <!-- [ngClass]="{ test1: player.enable[i].boo_status === false }" -->
@@ -62,7 +69,7 @@
         </div>
       </div>
     </div>
-    <div>
+    <div class="bouton">
       <button (click)="transmettreValeurProfil()">Fermer</button>
       <button type="button" (click)="suppressionDuJoueur()">Suppression</button>
     </div>

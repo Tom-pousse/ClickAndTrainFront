@@ -55,6 +55,10 @@ export class ProfilComponent {
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
         this.player = playerData;
+        if (playerData.enable[1].boo_status === null || undefined) {
+          this.son = true;
+          this.anim = true;
+        }
         this.son = playerData.enable[1].boo_status;
         this.anim = playerData.enable[1].boo_status;
 
@@ -69,6 +73,10 @@ export class ProfilComponent {
         this.player = { ...profil };
         this.cd.markForCheck();
         // creer un marquer ici pour actualisé l'info en cas de modif
+        if (this.player) {
+          // alert('test');
+          this.initProfil();
+        }
       });
     });
   }
@@ -89,7 +97,6 @@ export class ProfilComponent {
   choixUser = [
     {
       methode: (event: Event, param: Param) => {
-        this.initProfil();
         console.log('methode 1', param);
 
         // console.log('jai cliqué', event.target);
@@ -102,7 +109,7 @@ export class ProfilComponent {
         if (param.id_param === idEnable?.id_param) {
           // console.log('id de enable est egal à :', idEnable.id_param);
 
-          if (change.value === 'true') {
+          if (change.value === 'true' || undefined || null) {
             idEnable.boo_status = true;
             this.anim = true;
             // console.log('je save mon joueur', this.player);
@@ -129,7 +136,6 @@ export class ProfilComponent {
     },
     {
       methode: (event: Event, param: Param) => {
-        this.initProfil();
         console.log('methode 2', param);
         // console.log(event.target, event);
         const change = event.target as HTMLInputElement;
@@ -143,7 +149,7 @@ export class ProfilComponent {
         if (param.id_param === idEnable2?.id_param) {
           // console.log('id de enable est egal à :', idEnable2!.id_param);
 
-          if (change.value === 'true' || undefined) {
+          if (change.value === 'true' || undefined || null) {
             idEnable2.boo_status = true;
             this.son = true;
             // console.log('je save mon joueur', this.player);
