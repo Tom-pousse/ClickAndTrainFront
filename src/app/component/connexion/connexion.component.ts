@@ -54,6 +54,31 @@ export class ConnexionComponent {
 
   onInscription() {
     console.log('mon joueur', this.inscription.value);
+    // modif emplacement car pas logique ici
+    if (this.inscription.get('nom_password')!.hasError('required')) {
+      this.motDePasseError = 'Merci de renseigner un mon de passe. ';
+    }
+
+    if (this.inscription.get('nom_password')!.hasError('pattern')) {
+      this.motDePasseError =
+        'Un mot de passe valide dois comporter 8 caractères, 1 lettre minuscule, 1 lettre majuscule 1 chiffre et 1 caractère spécial.';
+    }
+    if (this.inscription.get('nom_pseudo')!.hasError('required')) {
+      this.pseudoError = 'Merci de renseigner un Pseudo. ';
+    }
+
+    if (this.inscription.get('nom_pseudo')!.hasError('pattern')) {
+      this.pseudoError =
+        'Un pseudo doit comporter Une Majuscule puis des minuscule, maj ou chiffre';
+    }
+
+    if (this.inscription.get('nom_email')!.hasError('required')) {
+      this.emailError = 'Merci de renseigner un email. ';
+    }
+
+    if (this.inscription.get('nom_email')!.hasError('email')) {
+      this.emailError = 'Merci de renseigner un email valide.';
+    }
     this.playerService
       .inscriptionUtilisateur(this.inscription.value)
       .subscribe({
@@ -65,34 +90,6 @@ export class ConnexionComponent {
           if (error.status === 409) {
             this.pseudoError = 'Ce pseudo ou email est déja utilisé';
           }
-          // modif emplacement car pas logique ici
-          if (this.inscription.get('nom_password')!.hasError('required')) {
-            this.motDePasseError = 'Merci de renseigner un mon de passe. ';
-          }
-
-          if (this.inscription.get('nom_password')!.hasError('pattern')) {
-            this.motDePasseError =
-              'Un mot de passe valide dois comporter 8 caractères, 1 lettre minuscule, 1 lettre majuscule 1 chiffre et 1 caractère spécial.';
-          }
-          if (this.inscription.get('nom_pseudo')!.hasError('required')) {
-            this.pseudoError = 'Merci de renseigner un Pseudo. ';
-          }
-
-          if (this.inscription.get('nom_pseudo')!.hasError('pattern')) {
-            this.pseudoError =
-              'Un pseudo doit comporter Une Majuscule puis des minuscule, maj ou chiffre';
-          }
-
-          if (this.inscription.get('nom_email')!.hasError('required')) {
-            this.emailError = 'Merci de renseigner un email. ';
-          }
-
-          if (this.inscription.get('nom_email')!.hasError('email')) {
-            this.emailError = 'Merci de renseigner un email valide.';
-          }
-
-          // console.log('test : ', error);
-          // alert('quelque chose c est mal passé : ' + message.status);
         },
       });
   }
@@ -112,6 +109,23 @@ export class ConnexionComponent {
   onLogin() {
     // alert('coucou');
     console.log(this.connexion.value);
+    if (this.connexion.get('nom_pseudo')!.hasError('required')) {
+      this.pseudoError1 = 'Merci de renseigner un Pseudo. ';
+    }
+
+    if (this.connexion.get('nom_pseudo')!.hasError('pattern')) {
+      this.pseudoError1 =
+        'Un pseudo doit comporter Une Majuscule puis des minuscule, maj ou chiffre';
+    }
+
+    if (this.connexion.get('nom_password')!.hasError('required')) {
+      this.motDePasseError1 = 'Merci de renseigner un mon de passe. ';
+    }
+
+    if (this.connexion.get('nom_password')!.hasError('pattern')) {
+      this.motDePasseError1 =
+        'Un mot de passe valide dois comporter 8 caractères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre et 1 caractère spécial.';
+    }
 
     this.playerService.connexionUtilisateur(this.connexion.value).subscribe({
       next: (response) => {
@@ -121,25 +135,13 @@ export class ConnexionComponent {
         location.reload();
       },
       error: (error) => {
+        if (error.status === 401) {
+          this.pseudoError1 = "Ce compte n'existe pas.";
+        }
+
         // modif emplacement car pas logique ici
         // alert('quelque chose c est mal passé');
-        if (this.connexion.get('nom_pseudo')!.hasError('required')) {
-          this.pseudoError1 = 'Merci de renseigner un Pseudo. ';
-        }
-
-        if (this.connexion.get('nom_pseudo')!.hasError('pattern')) {
-          this.pseudoError1 =
-            'Un pseudo doit comporter Une Majuscule puis des minuscule, maj ou chiffre';
-        }
-
-        if (this.connexion.get('nom_password')!.hasError('required')) {
-          this.motDePasseError1 = 'Merci de renseigner un mon de passe. ';
-        }
-
-        if (this.connexion.get('nom_password')!.hasError('pattern')) {
-          this.motDePasseError1 =
-            'Un mot de passe valide dois comporter 8 caractères, 1 lettre minuscule, 1 lettre majuscule, 1 chiffre et 1 caractère spécial.';
-        }
+        console.log(error);
       },
     });
   }
