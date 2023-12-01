@@ -65,6 +65,7 @@ export class ConnexionComponent {
           if (error.status === 409) {
             this.pseudoError = 'Ce pseudo ou email est déja utilisé';
           }
+          // modif emplacement car pas logique ici
           if (this.inscription.get('nom_password')!.hasError('required')) {
             this.motDePasseError = 'Merci de renseigner un mon de passe. ';
           }
@@ -120,6 +121,7 @@ export class ConnexionComponent {
         location.reload();
       },
       error: (error) => {
+        // modif emplacement car pas logique ici
         // alert('quelque chose c est mal passé');
         if (this.connexion.get('nom_pseudo')!.hasError('required')) {
           this.pseudoError1 = 'Merci de renseigner un Pseudo. ';
