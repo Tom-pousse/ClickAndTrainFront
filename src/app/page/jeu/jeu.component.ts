@@ -156,7 +156,6 @@ export class JeuComponent implements OnInit {
       .ecouteDuJoueurDepuisServeur()
       .subscribe((playerData: Player) => {
         this.player.acquire = playerData.acquire;
-        // console.log("j'ai mis à jour mon player", this.player, playerData);
         this.player = playerData;
         this.activationDuSon();
         this.animAutoByUpgrade();
@@ -200,7 +199,6 @@ export class JeuComponent implements OnInit {
     this.player.num_click += 1;
     this.sonTrain();
 
-    // console.log(this.player);
     this.socketIoService.envoieDePlayerAuServer(this.player);
   }
   animationImg() {
@@ -232,7 +230,6 @@ export class JeuComponent implements OnInit {
       // playbackRate permet d'accelerer la vitesse du son
       sonTrainClic.playbackRate = 2;
       sonTrainClic.play();
-      // console.log('jenvoie mon son');
     }
   }
 
@@ -240,13 +237,10 @@ export class JeuComponent implements OnInit {
   activationDuSon() {
     if (this.params) {
       const monParam = this.params.find((x) => x.nom_label === 'son');
-      // console.log(this.params.find((x) => x.nom_label === 'son'));
       const monIdParam = this.player.enable.find(
         (x) => x.id_param === monParam?.id_param
       );
-      // console.log('test', monIdParam);
 
-      // this.player.enable.find();
       if (monIdParam) {
         this.maValeurDeProfilSon! = monIdParam.boo_status;
         return;
@@ -293,9 +287,7 @@ export class JeuComponent implements OnInit {
       monIdSelect.id_upgrade === monUpgrade.id_upgrade &&
       this.player.num_score >= monUpgrade.num_cost
     ) {
-      // console.log('jai trouver un id');
       monIdSelect.num_lvl = monIdSelect.num_lvl + 1;
-      // console.log('mon lvl mis a jour', monIdSelect, this.player);
 
       monUpgrade.num_cost = Math.round(
         valeurUpgradeDeBase!.num_cost +
@@ -307,7 +299,6 @@ export class JeuComponent implements OnInit {
       this.player.num_score = Math.round(
         this.player.num_score - monUpgrade.num_cost
       );
-      //  this.socketIoService.envoieDePlayerAcquisitionAuServer(this.player);
       this.socketIoService.envoieDePlayerAuServer(this.player);
       this.incrementationParSetIntrval();
 
@@ -318,8 +309,6 @@ export class JeuComponent implements OnInit {
       this.player &&
       this.player.num_score >= monUpgrade.num_cost
     ) {
-      // console.log("je n'ai pas trouver id");
-
       this.acquire = {
         id_players: this.player.id_players,
         id_upgrade: monUpgrade.id_upgrade,
@@ -329,12 +318,6 @@ export class JeuComponent implements OnInit {
       this.player.num_score = Math.round(
         this.player.num_score - monUpgrade.num_cost
       );
-      // console.log(
-      //   'je creer une acquisition du joueur dans acquire via update en pushant directement dans le player',
-      //   this.acquire
-      // );
-      // console.log('je push dans player', this.player);
-
       monUpgrade.num_cost = Math.round(
         valeurUpgradeDeBase!.num_cost + valeurUpgradeDeBase!.num_cost / 10
       );
@@ -356,7 +339,6 @@ export class JeuComponent implements OnInit {
       const monAnim = this.player.enable.find(
         (x) => x.id_param === monAnimationParam?.id_param
       );
-      // console.log('test mon anim', monAnim);
       if (monAnim) {
         this.maValeurDeProfilAnim = monAnim!.boo_status;
       }
@@ -373,7 +355,6 @@ export class JeuComponent implements OnInit {
           jeTestsiAcquire !== undefined)
       ) {
         clearInterval(this.intervalIdPourAnimation);
-        // console.log('test anim on', this.maValeurDeProfilAnim);
 
         this.intervalIdPourAnimation = setInterval(() => {
           this.animationImg();
@@ -396,7 +377,6 @@ export class JeuComponent implements OnInit {
         }
       }
     });
-    // console.log('je log', this.selectImg);
   }
 
   recupDuPrixAuDemarage() {
@@ -424,20 +404,16 @@ export class JeuComponent implements OnInit {
         let testId = this.upgrades.find(
           (x) => x.id_upgrade === AcquisitionDuJoueur.id_upgrade
         );
-        // console.log('si jai ça', testId?.id_upgrade);
         if (testId) {
           testId.num_value;
-          // console.log(testId.num_value, testId);
 
           this.totalInc += testId.num_value;
-          // console.log('aaa', this.totalInc);
         }
       }
     }
   }
   save() {
     setInterval(() => {
-      // console.log('saveTime');
       this.socketIoService.envoieDePlayerAuServer(this.player);
     }, 10000);
   }
