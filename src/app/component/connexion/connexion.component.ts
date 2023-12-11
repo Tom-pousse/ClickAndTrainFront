@@ -53,8 +53,6 @@ export class ConnexionComponent {
   constructor(private playerService: PlayerService, private router: Router) {}
 
   onInscription() {
-    console.log('mon joueur', this.inscription.value);
-    // modif emplacement car pas logique ici
     if (this.inscription.get('nom_password')!.hasError('required')) {
       this.motDePasseError = 'Merci de renseigner un mon de passe. ';
     }
@@ -83,7 +81,6 @@ export class ConnexionComponent {
       .inscriptionUtilisateur(this.inscription.value)
       .subscribe({
         next: (response) => {
-          // console.log('test Bonne rép : ', response);
           this.switchLog();
         },
         error: (error) => {
@@ -96,7 +93,6 @@ export class ConnexionComponent {
 
   // methode au clic
   transmettreValeur() {
-    // console.log('transmition', this.valueModalLog.emit(false));
     this.valueModalLog.emit(false);
   }
 
@@ -107,8 +103,6 @@ export class ConnexionComponent {
   }
 
   onLogin() {
-    // alert('coucou');
-    console.log(this.connexion.value);
     if (this.connexion.get('nom_pseudo')!.hasError('required')) {
       this.pseudoError1 = 'Merci de renseigner un Pseudo. ';
     }
@@ -138,10 +132,6 @@ export class ConnexionComponent {
         if (error.status === 401) {
           this.pseudoError1 = "Ce compte n'existe pas.";
         }
-
-        // modif emplacement car pas logique ici
-        // alert('quelque chose c est mal passé');
-        console.log(error);
       },
     });
   }

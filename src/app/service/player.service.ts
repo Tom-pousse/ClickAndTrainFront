@@ -66,4 +66,11 @@ export class PlayerService {
     const headers = this.setHeaders();
     return this.http.delete<Player>(`${this.baseApiUrl}/profil`, { headers });
   }
+
+  getclassement(): Observable<Player[]> {
+    const headers = this.setHeaders();
+    return this.http.get<Player[]>(`${this.baseApiUrl}/classement`, {
+      headers,
+    });
+  }
 }

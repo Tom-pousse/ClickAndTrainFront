@@ -21,7 +21,6 @@ export class UpgradeService {
 
   getUpgrade(): Observable<Upgrade[]> {
     const headers = this.setHeaders();
-    // console.log('je suis ici');
 
     return this.http.get<Upgrade[]>(`${this.baseApiUrl}/upgrade`, {
       headers,

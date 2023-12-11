@@ -143,32 +143,6 @@ export class JeuComponent implements OnInit {
   params!: Param[];
   enModePaysage: boolean = false; // Variable pour suivre l'état de l'orientation
 
-  // @HostListener('window:orientationchange', ['$event'])
-  // onOrientationChange(event: Event) {
-  //   this.verifierOrientation();
-  // }
-
-  // verifierOrientation() {
-  //   // fonction de test pour voir la tailler via inner
-
-  //   console.log('linfo de window ', window);
-
-  //   this.enModePaysage = window.matchMedia('(orientation: landscape)').matches;
-
-  //   const tourner = "Tourner l'ecran pour jouer";
-
-  //   if (!this.enModePaysage && window.screen.width > 600) {
-  //     console.log('mode paysage');
-  //     // Ici, vous pouvez modifier une variable pour afficher le message dans votre template
-  //     // Par exemple : this.messageAAfficher = "Veuillez passer en mode paysage pour une meilleure expérience.";
-  //     return;
-  //   } else {
-  //     // Cacher le message
-  //     console.log('pas mode paysage');
-
-  //     return tourner;
-  //   }
-  // }
   constructor(
     private playerService: PlayerService,
     private upgradeService: UpgradeService,
@@ -199,7 +173,6 @@ export class JeuComponent implements OnInit {
       this.player = profil;
       this.acquireService.getAcquire().subscribe((mesAcquires) => {
         this.playerAcquisition = mesAcquires;
-        // console.log(this.player.acquire);
       });
 
       this.upgradeService.getUpgrade().subscribe((mesUpgrades) => {
@@ -218,8 +191,6 @@ export class JeuComponent implements OnInit {
 
     this.calculDuTotalIncAuto();
     localStorage.getItem('animation');
-
-    // console.log('ici', this.player);
   }
 
   // ------------ methode incrémental
@@ -231,7 +202,6 @@ export class JeuComponent implements OnInit {
 
     // console.log(this.player);
     this.socketIoService.envoieDePlayerAuServer(this.player);
-    console.log('eeeee');
   }
   animationImg() {
     this.monTabIm();
@@ -469,6 +439,6 @@ export class JeuComponent implements OnInit {
     setInterval(() => {
       // console.log('saveTime');
       this.socketIoService.envoieDePlayerAuServer(this.player);
-    }, 1000);
+    }, 10000);
   }
 }

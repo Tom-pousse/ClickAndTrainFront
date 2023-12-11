@@ -13,33 +13,31 @@ export class SocketIoService {
 
   constructor() {
     const token = localStorage.getItem('token');
-    console.log('teste io');
+    // console.log('teste io');
 
     if (token) {
       this.socket = io(this.baseUrl);
 
       this.socket.on('connect', () => {
-        console.log('Connecté à Socket.IO...');
+        // console.log('Connecté à Socket.IO...');
       });
 
       this.socket.on('disconnect', () => {
-        console.log('Déconnecté de Socket.IO...');
+        // console.log('Déconnecté de Socket.IO...');
       });
 
       this.socket.on('connect_error', (error) => {
         console.error('Erreur de connexion à Socket.IO', error);
       });
     } else {
-      console.log('Pas de token, Socket.IO désactivé.');
+      // console.log('Pas de token, Socket.IO désactivé.');
     }
   }
 
   // ...
-  // j'envoie vers le serveur
+  // méthode pour envoyer l'évenement vers le serveur socket depuis mon service
   envoieDePlayerAuServer(data: Player) {
     this.socket!.emit('clickZone', data);
-
-    console.log("je part d'ici");
   }
 
   // Méthode pour écouter l'événement du serveur
@@ -47,7 +45,6 @@ export class SocketIoService {
     return new Observable((observer) => {
       this.socket!.on('clickZone', (data) => {
         observer.next(data);
-        console.log('je reviens par la');
       });
     });
   }
